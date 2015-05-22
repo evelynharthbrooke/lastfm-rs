@@ -1,0 +1,18 @@
+[package]
+name = "rustfm"
+version = "0.0.1"
+
+authors = ["Roxas Shadow <webmaster@giovannicapuano.net>"]
+license = "WTFPL"
+
+description = "A Rust interface for Last.fm APIs"
+repository  = "https://github.com/RoxasShadow/rustfm"
+keywords    = ["lastfm"]
+
+[lib]
+name = "rustfm"
+path = "src/lib.rs"
+
+[dependencies]
+hyper = "0.5.0"
+rustc-serialize = "0.3"
