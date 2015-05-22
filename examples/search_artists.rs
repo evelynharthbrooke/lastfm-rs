@@ -16,7 +16,6 @@ fn main() {
 
   let artists : Vec<Artist> = search.results;
   for artist in artists.iter() {
-    println!("{}", &artist.to_string());
-    println!("");
+    println!("{}\n", &artist.to_string());
   }
 }
