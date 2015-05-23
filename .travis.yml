@@ -6,3 +6,6 @@ os:
 branches:
   only:
     - master
+
+notifications:
+  irc: 'irc.rizon.net#aggvistnurummor'
