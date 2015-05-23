@@ -3,6 +3,8 @@ use rustc_serialize::json::Decoder as JsonDecoder;
 use rustc_serialize::{Decoder, Decodable};
 
 use ::Image;
+use ::ImageCollection;
+use ::Event;
 use ::LastFM;
 use ::SearchResults;
 
@@ -40,20 +42,18 @@ impl<'a> Artist {
   }
 
   pub fn to_string(&self) -> String {
-    return format!("Name: {}\nListeners: {}\nURL: {}\nImages: \n{}",
+    return format!("Name: {}\nListeners: {}\nURL: {}\nImages:\n{}",
       self.name,
       self.listeners,
       self.url,
-      self.images.iter()
-        .filter(|i| !i.url.is_empty())
-        .map(|i| format!("  {}", i.to_string()))
-        .collect::<Vec<String>>().connect("\n")
+      self.images.to_string()
     );
   }
 
   pub fn search(lastfm: LastFM, query: &'a str) -> SearchResults<'a, Artist> {
     let response = lastfm.request("artist", "search", &query).unwrap();
-    let response_obj = response.as_object().unwrap();
+    let response_obj = response.get("results").unwrap()
+      .as_object().unwrap();
 
     let artists = match response_obj.get("artistmatches").unwrap().as_object() {
       Some(artist_matches) => artist_matches.get("artist").unwrap().as_array().unwrap(),
@@ -61,9 +61,25 @@ impl<'a> Artist {
     };
 
     return SearchResults {
-      query:   &query,
+      query: &query,
       results: artists.iter().map(|a|
         Artist::from_json(a.clone())
+      ).collect()
+    };
+  }
+
+  pub fn events(lastfm: LastFM, query: &'a str) -> SearchResults<'a, Event> {
+    let response = lastfm.request("artist", "getevents", &query).unwrap();
+
+    let events = match response.get("events").unwrap().as_object() {
+      Some(event_matches) => event_matches.get("event").unwrap().as_array().unwrap(),
+      None => panic!("No results :(")
+    };
+
+    return SearchResults {
+      query: &query,
+      results: events.iter().map(|a|
+        Event::from_json(a.clone())
       ).collect()
     };
   }
