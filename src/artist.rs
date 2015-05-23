@@ -3,6 +3,8 @@ use rustc_serialize::json::Decoder as JsonDecoder;
 use rustc_serialize::{Decoder, Decodable};
 
 use ::Image;
+use ::LastFM;
+use ::SearchResults;
 
 pub struct Artist {
   pub name:      String,
@@ -26,7 +28,7 @@ impl Decodable for Artist {
   }
 }
 
-impl Artist {
+impl<'a> Artist {
   pub fn from_json(artist: Json) -> Artist {
     let mut decoder = JsonDecoder::new(artist);
     let artist_obj : Artist = match Decodable::decode(&mut decoder) {
@@ -47,5 +49,22 @@ impl Artist {
         .map(|i| format!("  {}", i.to_string()))
         .collect::<Vec<String>>().connect("\n")
     );
+  }
+
+  pub fn search(lastfm: LastFM, query: &'a str) -> SearchResults<'a, Artist> {
+    let response = lastfm.request("artist", "search", &query).unwrap();
+    let response_obj = response.as_object().unwrap();
+
+    let artists = match response_obj.get("artistmatches").unwrap().as_object() {
+      Some(artist_matches) => artist_matches.get("artist").unwrap().as_array().unwrap(),
+      None => panic!("No results :(")
+    };
+
+    return SearchResults {
+      query:   &query,
+      results: artists.iter().map(|a|
+        Artist::from_json(a.clone())
+      ).collect()
+    };
   }
 }
