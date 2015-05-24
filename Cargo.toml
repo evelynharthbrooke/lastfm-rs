@@ -14,5 +14,7 @@ name = "rustfm"
 path = "src/lib.rs"
 
 [dependencies]
-hyper = "0.5.0"
 rustc-serialize = "0.3"
+
+[dependencies.hyper]
+git = "https://github.com/hyperium/hyper.git"
