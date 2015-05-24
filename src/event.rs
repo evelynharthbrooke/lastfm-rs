@@ -17,7 +17,6 @@ pub struct Event {
   pub website:     String,
   pub images:      Vec<Image>,
   pub venue:       Venue
-  // venue
 }
 
 impl Decodable for Event {
