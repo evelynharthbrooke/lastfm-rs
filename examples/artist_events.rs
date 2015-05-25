@@ -15,6 +15,6 @@ fn main() {
 
   let events : Vec<Event> = search.results;
   for event in events.iter() {
-    println!("{}\n", &event.to_string());
+    println!("{:?}\n", event);
   }
 }

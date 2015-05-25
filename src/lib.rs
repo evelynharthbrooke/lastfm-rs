@@ -5,7 +5,6 @@ extern crate rustc_serialize;
 pub mod macros;
 
 pub mod image;
-pub mod image_collection;
 pub mod artist;
 pub mod event;
 pub mod venue;
@@ -18,7 +17,5 @@ pub use event::Event;
 pub use venue::Venue;
 pub use location::Location;
 pub use image::Image;
-pub use image_collection::ImageCollection;
 pub use search_results::SearchResults;
 pub use lastfm::LastFM;
-

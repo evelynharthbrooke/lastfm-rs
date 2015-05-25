@@ -3,11 +3,11 @@ use rustc_serialize::json::Decoder as JsonDecoder;
 use rustc_serialize::{Decoder, Decodable};
 
 use ::Image;
-use ::ImageCollection;
 use ::Event;
 use ::LastFM;
 use ::SearchResults;
 
+#[derive(Debug)]
 pub struct Artist {
   pub name:      Option<String>,
   pub listeners: Option<u32>,
@@ -39,15 +39,6 @@ impl<'a> Artist {
     };
 
     return artist_obj;
-  }
-
-  pub fn to_string(&self) -> String {
-    return format!("Name: {}\nListeners: {}\nURL: {}\nImages:\n{}",
-      debug!(self.name),
-      debug!(self.listeners),
-      debug!(self.url),
-      debug_s!(self.images)
-    );
   }
 
   pub fn info(lastfm: LastFM, query: &'a str) -> SearchResults<'a, Artist> {

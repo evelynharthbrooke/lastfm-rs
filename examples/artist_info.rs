@@ -15,5 +15,5 @@ fn main() {
 
   let mut artists : Vec<Artist> = search.results;
   let     artist                = artists.pop();
-  println!("{}\n", &artist.unwrap().to_string());
+  println!("{:?}\n", artist.unwrap());
 }

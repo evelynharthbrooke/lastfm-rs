@@ -3,9 +3,9 @@ use rustc_serialize::json::Decoder as JsonDecoder;
 use rustc_serialize::{Decoder, Decodable};
 
 use ::Image;
-use ::ImageCollection;
 use ::Venue;
 
+#[derive(Debug)]
 pub struct Event {
   pub id:          Option<u32>,
   pub title:       Option<String>,
@@ -47,17 +47,5 @@ impl Event {
     };
 
     return event_obj;
-  }
-
-  pub fn to_string(&self) -> String {
-    return format!("Title: {}\nDescription: {}\nStart date: {}\nURL: {}\nWebsite: {}\nImages:\n{}\nVenue:\n{}",
-      debug!(self.title),
-      debug!(self.description),
-      debug!(self.start_date),
-      debug!(self.url),
-      debug!(self.website),
-      debug_s!(self.images),
-      debug_s!(self.venue),
-    );
   }
 }
