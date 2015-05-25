@@ -20,7 +20,7 @@ macro_rules! to_option {
   ($e:expr) => (match $e {
     Ok(val) => Some(val),
     Err(_) => None,
-  });
+  }.unwrap_or(None));
 }
 
 macro_rules! debug {
@@ -38,7 +38,7 @@ impl Decodable for Artist {
         mbid:      to_option!(decoder.read_struct_field("mbid",      0, Decodable::decode)),
         url:       to_option!(decoder.read_struct_field("url",       0, Decodable::decode)),
         images:    to_option!(decoder.read_struct_field("image",     0, Decodable::decode)),
-        listeners: to_option!(decoder.read_struct_field("listeners", 0, Decodable::decode)).unwrap_or(None)
+        listeners: to_option!(decoder.read_struct_field("listeners", 0, Decodable::decode))
       })
     })
   }
