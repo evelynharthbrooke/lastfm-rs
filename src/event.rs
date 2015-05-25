@@ -23,16 +23,16 @@ impl Decodable for Event {
   fn decode<D: Decoder>(decoder: &mut D) -> Result<Event, D::Error> {
     decoder.read_struct("root", 0, |decoder| {
       Ok(Event {
-        id:          try!(decoder.read_struct_field("id",          0, |decoder| Decodable::decode(decoder))),
-        title:       try!(decoder.read_struct_field("title",       0, |decoder| Decodable::decode(decoder))),
-        description: try!(decoder.read_struct_field("description", 0, |decoder| Decodable::decode(decoder))),
-        start_date:  try!(decoder.read_struct_field("startDate",   0, |decoder| Decodable::decode(decoder))),
-        attendance:  try!(decoder.read_struct_field("attendance",  0, |decoder| Decodable::decode(decoder))),
-        reviews:     try!(decoder.read_struct_field("reviews",     0, |decoder| Decodable::decode(decoder))),
-        url:         try!(decoder.read_struct_field("url",         0, |decoder| Decodable::decode(decoder))),
-        website:     try!(decoder.read_struct_field("website",     0, |decoder| Decodable::decode(decoder))),
-        images:      try!(decoder.read_struct_field("image",       0, |decoder| Decodable::decode(decoder))),
-        venue:       try!(decoder.read_struct_field("venue",       0, |decoder| Decodable::decode(decoder))),
+        id:          try!(decoder.read_struct_field("id",          0, Decodable::decode)),
+        title:       try!(decoder.read_struct_field("title",       0, Decodable::decode)),
+        description: try!(decoder.read_struct_field("description", 0, Decodable::decode)),
+        start_date:  try!(decoder.read_struct_field("startDate",   0, Decodable::decode)),
+        attendance:  try!(decoder.read_struct_field("attendance",  0, Decodable::decode)),
+        reviews:     try!(decoder.read_struct_field("reviews",     0, Decodable::decode)),
+        url:         try!(decoder.read_struct_field("url",         0, Decodable::decode)),
+        website:     try!(decoder.read_struct_field("website",     0, Decodable::decode)),
+        images:      try!(decoder.read_struct_field("image",       0, Decodable::decode)),
+        venue:       try!(decoder.read_struct_field("venue",       0, Decodable::decode)),
       })
     })
   }
@@ -40,8 +40,8 @@ impl Decodable for Event {
 
 impl Event {
   pub fn from_json(event: Json) -> Event {
-    let mut decoder = JsonDecoder::new(event);
-    let event_obj : Event = match Decodable::decode(&mut decoder) {
+    let mut decoder           = JsonDecoder::new(event);
+    let     event_obj : Event = match Decodable::decode(&mut decoder) {
       Ok(event) => event,
       Err(err)  => panic!(err)
     };
