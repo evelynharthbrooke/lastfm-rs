@@ -18,3 +18,4 @@ pub use image::Image;
 pub use image_collection::ImageCollection;
 pub use search_results::SearchResults;
 pub use lastfm::LastFM;
+
