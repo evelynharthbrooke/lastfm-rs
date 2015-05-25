@@ -9,22 +9,36 @@ use ::LastFM;
 use ::SearchResults;
 
 pub struct Artist {
-  pub name:      String,
-  pub listeners: u32,
-  pub mbid:      String,
-  pub url:       String,
-  pub images:    Vec<Image>
+  pub name:      Option<String>,
+  pub listeners: Option<u32>,
+  pub mbid:      Option<String>,
+  pub url:       Option<String>,
+  pub images:    Option<Vec<Image>>
+}
+
+macro_rules! to_option {
+  ($e:expr) => (match $e {
+    Ok(val) => Some(val),
+    Err(_) => None,
+  });
+}
+
+macro_rules! debug {
+  ($e:expr) => (match $e {
+    Some(ref val) => format!("{}", val),
+    None => format!("undefined")
+  });
 }
 
 impl Decodable for Artist {
   fn decode<D: Decoder>(decoder: &mut D) -> Result<Artist, D::Error> {
     decoder.read_struct("root", 0, |decoder| {
       Ok(Artist {
-        name:      try!(decoder.read_struct_field("name",      0, |decoder| Decodable::decode(decoder))),
-        listeners: try!(decoder.read_struct_field("listeners", 0, |decoder| Decodable::decode(decoder))),
-        mbid:      try!(decoder.read_struct_field("mbid",      0, |decoder| Decodable::decode(decoder))),
-        url:       try!(decoder.read_struct_field("url",       0, |decoder| Decodable::decode(decoder))),
-        images:    try!(decoder.read_struct_field("image",     0, |decoder| Decodable::decode(decoder))),
+        name:      to_option!(decoder.read_struct_field("name",      0, Decodable::decode)),
+        mbid:      to_option!(decoder.read_struct_field("mbid",      0, Decodable::decode)),
+        url:       to_option!(decoder.read_struct_field("url",       0, Decodable::decode)),
+        images:    to_option!(decoder.read_struct_field("image",     0, Decodable::decode)),
+        listeners: to_option!(decoder.read_struct_field("listeners", 0, Decodable::decode)).unwrap_or(None)
       })
     })
   }
@@ -32,8 +46,8 @@ impl Decodable for Artist {
 
 impl<'a> Artist {
   pub fn from_json(artist: Json) -> Artist {
-    let mut decoder = JsonDecoder::new(artist);
-    let artist_obj : Artist = match Decodable::decode(&mut decoder) {
+    let mut decoder             = JsonDecoder::new(artist);
+    let     artist_obj : Artist = match Decodable::decode(&mut decoder) {
       Ok(artist) => artist,
       Err(err)   => panic!(err)
     };
@@ -43,25 +57,38 @@ impl<'a> Artist {
 
   pub fn to_string(&self) -> String {
     return format!("Name: {}\nListeners: {}\nURL: {}\nImages:\n{}",
-      self.name,
-      self.listeners,
-      self.url,
-      self.images.to_string()
+      self.name.clone().unwrap(),
+      debug!(self.listeners),
+      self.url.clone().unwrap(),
+      match self.images { Some(ref f) => f.to_string(), None => format!("No images") }
     );
   }
 
+  pub fn info(lastfm: LastFM, query: &'a str) -> SearchResults<'a, Artist> {
+    let response = lastfm.request("artist", "getinfo", &query).unwrap();
+
+    let     artist                = response.get("artist").unwrap();
+    let mut artists : Vec<Artist> = Vec::new();
+    artists.push(Artist::from_json(artist.clone()));
+
+    return SearchResults {
+      query:   &query,
+      results: artists
+    };
+  }
+
   pub fn search(lastfm: LastFM, query: &'a str) -> SearchResults<'a, Artist> {
-    let response = lastfm.request("artist", "search", &query).unwrap();
+    let response     = lastfm.request("artist", "search", &query).unwrap();
     let response_obj = response.get("results").unwrap()
       .as_object().unwrap();
 
     let artists = match response_obj.get("artistmatches").unwrap().as_object() {
       Some(artist_matches) => artist_matches.get("artist").unwrap().as_array().unwrap(),
-      None => panic!("No results :(")
+      None                 => panic!("No results :(")
     };
 
     return SearchResults {
-      query: &query,
+      query:   &query,
       results: artists.iter().map(|a|
         Artist::from_json(a.clone())
       ).collect()
@@ -73,11 +100,11 @@ impl<'a> Artist {
 
     let events = match response.get("events").unwrap().as_object() {
       Some(event_matches) => event_matches.get("event").unwrap().as_array().unwrap(),
-      None => panic!("No results :(")
+      None                => panic!("No results :(")
     };
 
     return SearchResults {
-      query: &query,
+      query:   &query,
       results: events.iter().map(|a|
         Event::from_json(a.clone())
       ).collect()
