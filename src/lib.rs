@@ -1,6 +1,9 @@
 extern crate hyper;
 extern crate rustc_serialize;
 
+#[macro_use]
+pub mod macros;
+
 pub mod image;
 pub mod image_collection;
 pub mod artist;

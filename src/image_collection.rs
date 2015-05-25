@@ -7,7 +7,7 @@ pub trait ImageCollection {
 impl ImageCollection for Vec<Image> {
   fn to_string(&self) -> String {
     return self.iter()
-      .filter(|i| !i.url.is_empty())
+      .filter(|i| !i.url.clone().unwrap().is_empty())
       .map(|i| format!("  {}", i.to_string()))
       .collect::<Vec<String>>().connect("\n")
   }

@@ -16,20 +16,6 @@ pub struct Artist {
   pub images:    Option<Vec<Image>>
 }
 
-macro_rules! to_option {
-  ($e:expr) => (match $e {
-    Ok(val) => Some(val),
-    Err(_) => None,
-  }.unwrap_or(None));
-}
-
-macro_rules! debug {
-  ($e:expr) => (match $e {
-    Some(ref val) => format!("{}", val),
-    None => format!("undefined")
-  });
-}
-
 impl Decodable for Artist {
   fn decode<D: Decoder>(decoder: &mut D) -> Result<Artist, D::Error> {
     decoder.read_struct("root", 0, |decoder| {
@@ -57,10 +43,10 @@ impl<'a> Artist {
 
   pub fn to_string(&self) -> String {
     return format!("Name: {}\nListeners: {}\nURL: {}\nImages:\n{}",
-      self.name.clone().unwrap(),
+      debug!(self.name),
       debug!(self.listeners),
-      self.url.clone().unwrap(),
-      match self.images { Some(ref f) => f.to_string(), None => format!("No images") }
+      debug!(self.url),
+      debug_s!(self.images)
     );
   }
 
