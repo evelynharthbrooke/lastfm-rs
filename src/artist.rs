@@ -13,18 +13,64 @@ pub struct Artist {
   pub listeners: Option<u32>,
   pub mbid:      Option<String>,
   pub url:       Option<String>,
-  pub images:    Option<Vec<Image>>
+  pub images:    Option<Vec<Image>>,
+  pub biography: Option<Biography>,
+  pub stats:     Option<Stats>,
+  pub members:   Option<BandMemberC>, // TODO: Remove Container
+  pub similar:   Option<SuggestedArtistC>
+}
+
+#[derive(Debug, RustcDecodable)]
+pub struct Biography {
+  pub published:   Option<String>,
+  pub content:     Option<String>,
+  pub placeformed: Option<String>,
+  pub yearformed:  Option<String>
+}
+
+#[derive(Debug, RustcDecodable)]
+pub struct Stats {
+  pub listeners:   Option<u32>,
+  pub playcount:   Option<u32>
+}
+
+#[derive(Debug, RustcDecodable)]
+pub struct BandMember {
+  pub name:     Option<String>,
+  pub yearfrom: Option<u32>,
+  pub yearto:   Option<u32>,
+}
+
+#[derive(Debug, RustcDecodable)]
+pub struct BandMemberC {
+  pub member: Vec<BandMember>
+}
+
+#[derive(Debug, RustcDecodable)]
+pub struct SuggestedArtist {
+  pub name:      Option<String>,
+  pub url:       Option<String>,
+  pub images:    Option<Vec<Image>>,
+}
+
+#[derive(Debug, RustcDecodable)]
+pub struct SuggestedArtistC {
+  pub artist: Option<Vec<SuggestedArtist>>
 }
 
 impl Decodable for Artist {
   fn decode<D: Decoder>(decoder: &mut D) -> Result<Artist, D::Error> {
     decoder.read_struct("root", 0, |decoder| {
       Ok(Artist {
-        name:      to_option!(decoder.read_struct_field("name",      0, Decodable::decode)),
-        mbid:      to_option!(decoder.read_struct_field("mbid",      0, Decodable::decode)),
-        url:       to_option!(decoder.read_struct_field("url",       0, Decodable::decode)),
-        images:    to_option!(decoder.read_struct_field("image",     0, Decodable::decode)),
-        listeners: to_option!(decoder.read_struct_field("listeners", 0, Decodable::decode))
+        name:      to_option!(decoder.read_struct_field("name",        0, Decodable::decode)),
+        listeners: to_option!(decoder.read_struct_field("listeners",   0, Decodable::decode)),
+        mbid:      to_option!(decoder.read_struct_field("mbid",        0, Decodable::decode)),
+        url:       to_option!(decoder.read_struct_field("url",         0, Decodable::decode)),
+        images:    to_option!(decoder.read_struct_field("image",       0, Decodable::decode)),
+        biography: to_option!(decoder.read_struct_field("bio",         0, Decodable::decode)),
+        stats:     to_option!(decoder.read_struct_field("stats",       0, Decodable::decode)),
+        members:   to_option!(decoder.read_struct_field("bandmembers", 0, Decodable::decode)),
+        similar:   to_option!(decoder.read_struct_field("similar",     0, Decodable::decode))
       })
     })
   }
