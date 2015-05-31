@@ -16,35 +16,11 @@ pub struct Artist {
   pub images:    Option<Vec<Image>>,
   pub biography: Option<Biography>,
   pub stats:     Option<Stats>,
-  pub members:   Option<Vec<BandMember>>/*,
-  pub tags:      Option<Vec<Tag>>,
-  pub similar:   Option<Vec<SuggestedArtist>>*/
+  pub members:   Option<BandMemberC>, // TODO: Remove Container
+  pub similar:   Option<SuggestedArtistC>
 }
 
-#[derive(Debug)]
-#[derive(RustcDecodable)]
-pub struct SuggestedArtist {
-  pub name:      Option<String>,
-  pub url:       Option<String>,
-  pub images:    Option<Vec<Image>>,
-}
-
-#[derive(Debug)]
-#[derive(RustcDecodable)]
-pub struct BandMemberContainer {
-  pub member: Vec<BandMember>
-}
-
-#[derive(Debug)]
-#[derive(RustcDecodable)]
-pub struct BandMember {
-  pub name:     Option<String>,
-  pub yearfrom: Option<u32>,
-  pub yearto:   Option<u32>,
-}
-
-#[derive(Debug)]
-#[derive(RustcDecodable)]
+#[derive(Debug, RustcDecodable)]
 pub struct Biography {
   pub published:   Option<String>,
   pub content:     Option<String>,
@@ -52,18 +28,34 @@ pub struct Biography {
   pub yearformed:  Option<String>
 }
 
-#[derive(Debug)]
-#[derive(RustcDecodable)]
+#[derive(Debug, RustcDecodable)]
 pub struct Stats {
   pub listeners:   Option<u32>,
   pub playcount:   Option<u32>
 }
 
-#[derive(Debug)]
-#[derive(RustcDecodable)]
-pub struct Tag {
-  pub name: Option<String>,
-  pub url:  Option<String>
+#[derive(Debug, RustcDecodable)]
+pub struct BandMember {
+  pub name:     Option<String>,
+  pub yearfrom: Option<u32>,
+  pub yearto:   Option<u32>,
+}
+
+#[derive(Debug, RustcDecodable)]
+pub struct BandMemberC {
+  pub member: Vec<BandMember>
+}
+
+#[derive(Debug, RustcDecodable)]
+pub struct SuggestedArtist {
+  pub name:      Option<String>,
+  pub url:       Option<String>,
+  pub images:    Option<Vec<Image>>,
+}
+
+#[derive(Debug, RustcDecodable)]
+pub struct SuggestedArtistC {
+  pub artist: Option<Vec<SuggestedArtist>>
 }
 
 impl Decodable for Artist {
@@ -77,15 +69,8 @@ impl Decodable for Artist {
         images:    to_option!(decoder.read_struct_field("image",       0, Decodable::decode)),
         biography: to_option!(decoder.read_struct_field("bio",         0, Decodable::decode)),
         stats:     to_option!(decoder.read_struct_field("stats",       0, Decodable::decode)),
-        members:   to_option!(decoder.read_struct_field("bandmembers", 0, |decoder| {
-          decoder.read_struct_field("member", 0, Decodable::decode)
-        }))
-        /* tags:      to_option!(decoder.read_struct_field("tags",    0, |decoder| {
-          decoder.read_struct_field("tag", 0, Decodable::decode)
-        })),
-        similar:   to_option!(decoder.read_struct_field("similar", 0, |decoder| {
-          decoder.read_struct_field("artist", 0, Decodable::decode)
-        }))*/
+        members:   to_option!(decoder.read_struct_field("bandmembers", 0, Decodable::decode)),
+        similar:   to_option!(decoder.read_struct_field("similar",     0, Decodable::decode))
       })
     })
   }
