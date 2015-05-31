@@ -1,6 +1,6 @@
 [package]
 name = "rustfm"
-version = "0.0.2"
+version = "0.0.3"
 
 authors = ["Roxas Shadow <webmaster@giovannicapuano.net>"]
 license = "WTFPL"
@@ -15,6 +15,4 @@ path = "src/lib.rs"
 
 [dependencies]
 rustc-serialize = "0.3"
-
-[dependencies.hyper]
-git = "https://github.com/hyperium/hyper.git"
+hyper = "0.5.1"
