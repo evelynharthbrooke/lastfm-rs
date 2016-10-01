@@ -1,11 +1,6 @@
 language: rust
-os:
-  - linux
-  - osx
 
-branches:
-  only:
-    - master
+cache: cargo
 
-notifications:
-  irc: 'irc.rizon.net#aggvistnurummor'
+rust:
+  - nightly
