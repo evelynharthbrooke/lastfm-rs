@@ -5,24 +5,24 @@ use super::{Client, Error, RawData};
 #[derive(Debug, Deserialize)]
 pub struct User {
     #[serde(rename = "recenttracks")]
-    recent_tracks: Option<RecentTracks>
+    pub recent_tracks: Option<RecentTracks>
 }
 
 #[derive(Debug, Deserialize)]
 pub struct RecentTracks {
     #[serde(rename = "track")]
-    tracks: Vec<Track>
+    pub tracks: Vec<Track>
 }
 
 #[derive(Debug, Deserialize)]
 pub struct Track {
-    artist: RawData,
-    name:   String,
-    album:  RawData,
-    url:    String,
+    pub artist: RawData,
+    pub name:   String,
+    pub album:  RawData,
+    pub url:    String,
     #[serde(rename = "image")]
-    images: Vec<RawData>,
-    date:   RawData
+    pub images: Vec<RawData>,
+    pub date:   RawData
 }
 
 impl RecentTracks {

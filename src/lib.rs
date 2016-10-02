@@ -25,7 +25,7 @@ pub enum Error {
 #[derive(Deserialize)]
 pub struct RawData {
     #[serde(rename = "#text")]
-    text: String
+    pub text: String
 }
 
 impl fmt::Debug for RawData {
