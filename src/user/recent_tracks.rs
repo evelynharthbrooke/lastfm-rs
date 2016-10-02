@@ -1,14 +1,9 @@
 use std::io::Read;
 use std::marker::PhantomData;
 use serde_json;
-use super::{Client, RawData, RequestBuilder};
+use {Client, RawData, RequestBuilder};
+use user::User;
 use error::{LastFMError, Error};
-
-#[derive(Debug, Deserialize)]
-pub struct User {
-    #[serde(rename = "recenttracks")]
-    pub recent_tracks: Option<RecentTracks>
-}
 
 /// http://www.last.fm/api/show/user.getRecentTracks
 #[derive(Debug, Deserialize)]
