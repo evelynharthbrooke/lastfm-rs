@@ -29,7 +29,15 @@ type HTTPResult = hyper::error::Result<hyper::client::response::Response>;
 #[derive(Debug)]
 pub enum Error {
     ParsingError(serde_json::error::Error),
-    HTTPError(hyper::error::Error)
+    HTTPError(hyper::error::Error),
+    LastFMError(LastFMError)
+}
+
+#[derive(Deserialize, Debug)]
+pub struct LastFMError {
+    pub error:   i32,
+    pub message: String,
+    pub links:   Vec<String>
 }
 
 #[derive(Deserialize)]

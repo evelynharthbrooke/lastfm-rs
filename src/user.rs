@@ -2,7 +2,7 @@ use std::io::Read;
 use std::marker::PhantomData;
 use url::Url;
 use serde_json;
-use super::{Client, Error, RawData};
+use super::{Client, Error, RawData, LastFMError};
 
 #[derive(Debug, Deserialize)]
 pub struct User {
@@ -53,9 +53,14 @@ impl<'a> RequestBuilder<'a, RecentTracks> {
                 let mut body = String::new();
                 response.read_to_string(&mut body).unwrap();
 
-                match serde_json::from_str::<User>(&*body) {
-                    Ok(user) => Ok(user.recent_tracks.unwrap()),
-                    Err(e)   => Err(Error::ParsingError(e))
+                match serde_json::from_str::<LastFMError>(&*body) {
+                    Ok(lastm_error) => Err(Error::LastFMError(lastm_error)),
+                    Err(_) => {
+                        match serde_json::from_str::<User>(&*body) {
+                            Ok(user) => Ok(user.recent_tracks.unwrap()),
+                            Err(e)   => Err(Error::ParsingError(e))
+                        }
+                    }
                 }
             },
             Err(err) => Err(Error::HTTPError(err))
