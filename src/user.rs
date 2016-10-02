@@ -26,7 +26,7 @@ pub struct Track {
 }
 
 impl RecentTracks {
-    pub fn fetch(client: &mut Client, user: &str) -> Result<User, Error> {
+    pub fn fetch(client: &mut Client, user: &str) -> Result<RecentTracks, Error> {
         let url = client.build_url(vec![
                                    ("method", "user.getRecentTracks"),
                                    ("user",   user)
@@ -37,7 +37,10 @@ impl RecentTracks {
                 let mut body = String::new();
                 response.read_to_string(&mut body).unwrap();
 
-                serde_json::from_str(&*body).map_err(|e| Error::ParsingError(e))
+                match serde_json::from_str::<User>(&*body) {
+                    Ok(user) => Ok(user.recent_tracks.unwrap()),
+                    Err(e)   => Err(Error::ParsingError(e))
+                }
             },
             Err(err) => Err(Error::HTTPError(err))
         }
@@ -45,7 +48,7 @@ impl RecentTracks {
 }
 
 impl<'a> Client<'a> {
-    pub fn recent_tracks(&mut self, user: &str) -> Result<User, Error> {
+    pub fn recent_tracks(&mut self, user: &str) -> Result<RecentTracks, Error> {
         RecentTracks::fetch(self, user)
     }
 }
