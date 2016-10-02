@@ -9,6 +9,7 @@ extern crate url;
 #[macro_use] extern crate lazy_static;
 
 use std::fmt;
+use std::marker::PhantomData;
 use url::Url;
 use hyper::client::Client as HTTPClient;
 
@@ -22,24 +23,12 @@ macro_rules! add_param {
     }
 }
 
+pub mod error;
 pub mod user;
 
 type HTTPResult = hyper::error::Result<hyper::client::response::Response>;
 
-#[derive(Debug)]
-pub enum Error {
-    ParsingError(serde_json::error::Error),
-    HTTPError(hyper::error::Error),
-    LastFMError(LastFMError)
-}
-
-#[derive(Deserialize, Debug)]
-pub struct LastFMError {
-    pub error:   i32,
-    pub message: String,
-    pub links:   Vec<String>
-}
-
+/// Generic LastFM object.
 #[derive(Deserialize)]
 pub struct RawData {
     #[serde(rename = "#text")]
@@ -58,6 +47,12 @@ impl fmt::Display for RawData {
     }
 }
 
+pub struct RequestBuilder<'a, T: 'a> {
+    client:  &'a mut Client,
+    url:     Url,
+    phantom: PhantomData<&'a T>
+}
+
 pub struct Client {
     api_key:     String,
     http_client: HTTPClient
@@ -71,6 +66,7 @@ impl Client {
         }
     }
 
+    /// Build a new URL with given query params pointing to the LastFM APIs.
     fn build_url(&self, params: Vec<(&str, &str)>) -> Url {
         let mut url = Url::parse("http://ws.audioscrobbler.com/2.0/").unwrap();
 
@@ -85,6 +81,7 @@ impl Client {
         url
     }
 
+    /// Send a GET request to given `Url`.
     fn request(&mut self, url: &Url) -> HTTPResult {
         self.http_client.get(url.as_str()).send()
     }

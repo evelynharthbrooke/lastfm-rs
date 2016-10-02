@@ -1,8 +1,8 @@
 use std::io::Read;
 use std::marker::PhantomData;
-use url::Url;
 use serde_json;
-use super::{Client, Error, RawData, LastFMError};
+use super::{Client, RawData, RequestBuilder};
+use error::{LastFMError, Error};
 
 #[derive(Debug, Deserialize)]
 pub struct User {
@@ -10,6 +10,7 @@ pub struct User {
     pub recent_tracks: Option<RecentTracks>
 }
 
+/// http://www.last.fm/api/show/user.getRecentTracks
 #[derive(Debug, Deserialize)]
 pub struct RecentTracks {
     #[serde(rename = "track")]
@@ -27,18 +28,13 @@ pub struct Track {
     pub date:   Option<RawData>
 }
 
-pub struct RequestBuilder<'a, T: 'a> {
-    client:  &'a mut Client,
-    url:     Url,
-    phantom: PhantomData<&'a T>
-}
-
 impl RecentTracks {
     pub fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, RecentTracks> {
         let url = client.build_url(vec![
                                    ("method", "user.getRecentTracks"),
                                    ("user",   user)
         ]);
+
         RequestBuilder { client: client, url: url, phantom: PhantomData }
     }
 }
@@ -54,7 +50,7 @@ impl<'a> RequestBuilder<'a, RecentTracks> {
                 response.read_to_string(&mut body).unwrap();
 
                 match serde_json::from_str::<LastFMError>(&*body) {
-                    Ok(lastm_error) => Err(Error::LastFMError(lastm_error)),
+                    Ok(lastm_error) => Err(Error::LastFMError(lastm_error.into())),
                     Err(_) => {
                         match serde_json::from_str::<User>(&*body) {
                             Ok(user) => Ok(user.recent_tracks.unwrap()),
@@ -85,5 +81,13 @@ mod tests {
             .with_limit(1)
             .send();
         assert!(recent_tracks.is_ok());
+    }
+
+    #[test]
+    fn test_recent_tracks_not_found() {
+        let mut client        = make_client();
+        let     recent_tracks = client.recent_tracks("nonesistinonesistinonesisti").send();
+        assert_eq!(&*format!("{:?}", recent_tracks),
+           "Err(LastFMError(InvalidParameter(LastFMError { error: 6, message: \"User not found\", links: [] })))");
     }
 }
