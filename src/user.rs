@@ -1,4 +1,6 @@
 use std::io::Read;
+use std::marker::PhantomData;
+use url::Url;
 use serde_json;
 use super::{Client, Error, RawData};
 
@@ -25,14 +27,28 @@ pub struct Track {
     pub date:   RawData
 }
 
+pub struct RequestBuilder<'a, T: 'a> {
+    client:  &'a mut Client,
+    url:     Url,
+    phantom: PhantomData<&'a T>
+}
+
 impl RecentTracks {
-    pub fn fetch(client: &mut Client, user: &str) -> Result<RecentTracks, Error> {
+    pub fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, RecentTracks> {
         let url = client.build_url(vec![
                                    ("method", "user.getRecentTracks"),
                                    ("user",   user)
         ]);
+        RequestBuilder { client: client, url: url, phantom: PhantomData }
+    }
+}
 
-        match client.request(url) {
+impl<'a> RequestBuilder<'a, RecentTracks> {
+    add_param!(with_limit, limit, u32);
+    add_param!(with_page,  page,  u32);
+
+    pub fn send(&'a mut self) -> Result<RecentTracks, Error> {
+        match self.client.request(&self.url) {
             Ok(mut response) => {
                 let mut body = String::new();
                 response.read_to_string(&mut body).unwrap();
@@ -47,9 +63,9 @@ impl RecentTracks {
     }
 }
 
-impl<'a> Client<'a> {
-    pub fn recent_tracks(&mut self, user: &str) -> Result<RecentTracks, Error> {
-        RecentTracks::fetch(self, user)
+impl<'a> Client {
+    pub fn recent_tracks(&'a mut self, user: &str) -> RequestBuilder<'a, RecentTracks> {
+        RecentTracks::build(self, user)
     }
 }
 
@@ -60,7 +76,9 @@ mod tests {
     #[test]
     fn test_recent_tracks() {
         let mut client        = make_client();
-        let     recent_tracks = client.recent_tracks("RoxasShadow");
+        let     recent_tracks = client.recent_tracks("RoxasShadow")
+            .with_limit(1)
+            .send();
         assert!(recent_tracks.is_ok());
     }
 }

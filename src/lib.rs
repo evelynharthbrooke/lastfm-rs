@@ -12,6 +12,16 @@ use std::fmt;
 use url::Url;
 use hyper::client::Client as HTTPClient;
 
+macro_rules! add_param {
+    ($f:ident, $p:ident, $t:ty) => {
+        fn $f(&'a mut self, v: $t) -> &'a mut Self {
+            self.url.query_pairs_mut().append_pair(
+                stringify!($p), &*v.to_string());
+            self
+        }
+    }
+}
+
 pub mod user;
 
 type HTTPResult = hyper::error::Result<hyper::client::response::Response>;
@@ -34,15 +44,15 @@ impl fmt::Debug for RawData {
     }
 }
 
-pub struct Client<'a> {
-    api_key:     &'a str,
+pub struct Client {
+    api_key:     String,
     http_client: HTTPClient
 }
 
-impl<'a> Client<'a> {
-    pub fn new(api_key: &'a str) -> Client {
+impl Client {
+    pub fn new(api_key: &str) -> Client {
         Client {
-            api_key:     api_key,
+            api_key:     api_key.to_owned(),
             http_client: HTTPClient::new()
         }
     }
@@ -51,7 +61,7 @@ impl<'a> Client<'a> {
         let mut url = Url::parse("http://ws.audioscrobbler.com/2.0/").unwrap();
 
         url.query_pairs_mut().clear()
-            .append_pair("api_key", self.api_key)
+            .append_pair("api_key", &*self.api_key)
             .append_pair("format", "json");
 
         for (key, value) in params {
@@ -61,7 +71,7 @@ impl<'a> Client<'a> {
         url
     }
 
-    fn request(&mut self, url: Url) -> HTTPResult {
+    fn request(&mut self, url: &Url) -> HTTPResult {
         self.http_client.get(url.as_str()).send()
     }
 }
@@ -70,7 +80,7 @@ impl<'a> Client<'a> {
 mod tests {
     use super::Client;
 
-    pub fn make_client<'a>() -> Client<'a> {
+    pub fn make_client() -> Client {
         Client::new("572b13444704f89c67b07a713d5e5de1")
     }
 
