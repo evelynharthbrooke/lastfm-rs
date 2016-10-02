@@ -24,7 +24,7 @@ pub struct Track {
     pub url:    String,
     #[serde(rename = "image")]
     pub images: Vec<RawData>,
-    pub date:   RawData
+    pub date:   Option<RawData>
 }
 
 pub struct RequestBuilder<'a, T: 'a> {
