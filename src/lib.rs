@@ -40,7 +40,7 @@ pub struct Client<'a> {
 }
 
 impl<'a> Client<'a> {
-    fn new(api_key: &'a str) -> Client {
+    pub fn new(api_key: &'a str) -> Client {
         Client {
             api_key:     api_key,
             http_client: HTTPClient::new()

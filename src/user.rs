@@ -45,7 +45,7 @@ impl RecentTracks {
 }
 
 impl<'a> Client<'a> {
-    fn recent_tracks(&mut self, user: &str) -> Result<User, Error> {
+    pub fn recent_tracks(&mut self, user: &str) -> Result<User, Error> {
         RecentTracks::fetch(self, user)
     }
 }
