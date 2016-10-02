@@ -52,6 +52,12 @@ impl fmt::Debug for RawData {
     }
 }
 
+impl fmt::Display for RawData {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.text)
+    }
+}
+
 pub struct Client {
     api_key:     String,
     http_client: HTTPClient
