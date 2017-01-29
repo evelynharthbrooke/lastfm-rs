@@ -85,25 +85,30 @@ impl Client {
 
 #[cfg(test)]
 mod tests {
+    use std::env;
     use super::Client;
 
     pub fn make_client() -> Client {
-        Client::new("572b13444704f89c67b07a713d5e5de1")
+        let api_key = env::var("API_KEY").unwrap();
+        Client::new(&api_key)
     }
 
     #[test]
     fn test_build_url() {
+        let api_key = env::var("API_KEY").unwrap();
+        let user    = env::var("USER").unwrap();
+
         let client = make_client();
         let url    = client.build_url(vec![
                                       ("method", "user.getrecenttracks"),
-                                      ("user",   "RoxasShadow")
+                                      ("user",   &user)
         ]);
 
         assert_eq!(url.as_str(),
-            "http://ws.audioscrobbler.com/2.0/?api_key=572b13444704f89c67b07a713d5e5de1&format=json&method=user.getrecenttracks&user=RoxasShadow");
+            &format!("http://ws.audioscrobbler.com/2.0/?api_key={}&format=json&method=user.getrecenttracks&user={}", api_key, user));
 
         let url = client.build_url(vec![]);
         assert_eq!(url.as_str(),
-            "http://ws.audioscrobbler.com/2.0/?api_key=572b13444704f89c67b07a713d5e5de1&format=json");
+            &format!("http://ws.audioscrobbler.com/2.0/?api_key={}&format=json", api_key));
     }
 }
