@@ -66,7 +66,8 @@ impl Client {
     fn build_url(&self, params: Vec<(&str, &str)>) -> Url {
         let mut url = Url::parse("http://ws.audioscrobbler.com/2.0/").unwrap();
 
-        url.query_pairs_mut().clear()
+        url.query_pairs_mut()
+            .clear()
             .append_pair("api_key", &*self.api_key)
             .append_pair("format", "json");
 
