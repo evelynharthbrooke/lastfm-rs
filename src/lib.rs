@@ -28,9 +28,7 @@ type HTTPResult = hyper::error::Result<hyper::client::response::Response>;
 #[derive(Deserialize)]
 pub struct RawData {
     #[serde(rename = "#text")]
-    pub text: String,
-    #[serde(rename = "nowplaying")]
-    pub now_playing: Option<bool>,
+    pub text: String
 }
 
 impl fmt::Debug for RawData {
