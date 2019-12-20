@@ -36,7 +36,7 @@ pub struct Track {
     pub streamable: String,
     #[serde(rename = "image")]
     pub images: Vec<Image>,
-    pub date: Option<RawData>,
+    pub date: Option<Date>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -45,13 +45,21 @@ pub struct Image {
     pub size: String,
     /// the text (or URL) associated with the image.
     #[serde(rename = "#text")]
-    pub text: String,
+    pub image_url: String,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct TrackAttributes {
     #[serde(rename = "nowplaying")]
     pub now_playing: String
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Date {
+    #[serde(rename = "uts")]
+    pub unix_timestamp: String,
+    #[serde(rename = "#text")]
+    pub friendly_date: String,
 }
 
 impl RecentTracks {
