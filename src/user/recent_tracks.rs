@@ -3,7 +3,7 @@ use serde_json;
 use std::io::Read;
 use std::marker::PhantomData;
 use user::User;
-use {Client, RawData, RequestBuilder};
+use {Client, RequestBuilder};
 
 /// The main recent tracks structure.
 ///

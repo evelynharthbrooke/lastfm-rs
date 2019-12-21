@@ -25,25 +25,6 @@ pub mod user;
 
 type HTTPResult = hyper::error::Result<hyper::client::response::Response>;
 
-/// Generic LastFM object.
-#[derive(Deserialize)]
-pub struct RawData {
-    #[serde(rename = "#text")]
-    pub text: String,
-}
-
-impl fmt::Debug for RawData {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, r#""{}""#, self.text)
-    }
-}
-
-impl fmt::Display for RawData {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.text)
-    }
-}
-
 pub struct RequestBuilder<'a, T: 'a> {
     client: &'a mut Client,
     url: Url,
