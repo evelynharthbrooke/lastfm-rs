@@ -6,7 +6,6 @@ extern crate serde_json;
 extern crate url;
 
 use hyper::client::Client as HTTPClient;
-use std::fmt;
 use std::marker::PhantomData;
 use url::Url;
 
