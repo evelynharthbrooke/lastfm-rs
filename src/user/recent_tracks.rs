@@ -1,3 +1,5 @@
+//!
+
 use error::{Error, LastFMError};
 use serde_json;
 use std::io::Read;
@@ -5,11 +7,20 @@ use std::marker::PhantomData;
 use user::User;
 use {Client, RawData, RequestBuilder};
 
-/// http://www.last.fm/api/show/user.getRecentTracks
+/// The main recent tracks structure.
+///
+/// This is splitted off into two areas: One, the attributes (used
+/// for displaying various user-associated attributes), and two,
+/// the recent tracks the user has played.
+///
+/// For details on the attributes available, refer to [Attributes]. For
+/// details on the track information available, refer to [Track].
 #[derive(Debug, Deserialize)]
 pub struct RecentTracks {
+    /// Various user attributes.
     #[serde(rename = "@attr")]
     pub attrs: Attributes,
+    /// A [Vec] containiing recent [Track]s.
     #[serde(rename = "track")]
     pub tracks: Vec<Track>,
 }
@@ -27,37 +38,58 @@ pub struct Attributes {
 
 #[derive(Debug, Deserialize)]
 pub struct Track {
-    pub artist: RawData,
+    /// The primary artist associated with the track.
+    pub artist: Artist,
+    /// Various attributes associated with the track.
     #[serde(rename = "@attr")]
     pub attrs: Option<TrackAttributes>,
+    /// The name of the track.
     pub name: String,
+    /// The album the track is associated with.
     pub album: RawData,
+    /// The last.fm URL of the track.
     pub url: String,
+    /// Whether or not a track is streamable.
     pub streamable: String,
+    /// Images associated with the track.
     #[serde(rename = "image")]
     pub images: Vec<Image>,
+    /// The date of when the track was scrobbled.
     pub date: Option<Date>,
 }
 
 #[derive(Debug, Deserialize)]
+pub struct Artist {
+    #[serde(rename = "#text")]
+    pub name: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct TrackAttributes {
+    /// Whether or not the user's first available track is the
+    /// one the user is currently playing. This is technically
+    /// "nowplaying" in the Last.fm API, however it was renamed
+    /// to cohere to Rust's naming conventions.
+    #[serde(rename = "nowplaying")]
+    pub now_playing: String,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct Image {
-    /// The size of the image.
-    pub size: String,
-    /// the text (or URL) associated with the image.
+    #[serde(rename = "size")]
+    pub image_size: String,
     #[serde(rename = "#text")]
     pub image_url: String,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct TrackAttributes {
-    #[serde(rename = "nowplaying")]
-    pub now_playing: String
-}
-
-#[derive(Debug, Deserialize)]
 pub struct Date {
+    /// The timestamp of a [Track] in the form of a UNIX Epoch /
+    /// Timestamp.
     #[serde(rename = "uts")]
     pub unix_timestamp: String,
+    /// The friendly date of when a [Track] was first scrobbled
+    /// on Last.fm.
     #[serde(rename = "#text")]
     pub friendly_date: String,
 }
@@ -110,16 +142,15 @@ mod tests {
     #[test]
     fn test_recent_tracks() {
         let mut client = make_client();
-        let recent_tracks = client.recent_tracks("MackeyKamran").with_limit(2).send();
-        println!("{:#?}", recent_tracks);
+        let recent_tracks = client.recent_tracks("MackeyKamran").with_limit(1).send();
         assert!(recent_tracks.is_ok());
     }
 
-    // #[test]
-    // fn test_recent_tracks_not_found() {
-    //     let mut client = make_client();
-    //     let recent_tracks = client.recent_tracks("nonesistinonesistinonesisti").send();
-    //     assert_eq!(&*format!("{:?}", recent_tracks),
-    //        "Err(LastFMError(InvalidParameter(LastFMError { error: 6, message: \"User not found\", links: [] })))");
-    // }
+    #[test]
+    fn test_recent_tracks_not_found() {
+        let mut client = make_client();
+        let recent_tracks = client.recent_tracks("nonesistinonesistinonesisti").send();
+        assert_eq!(&*format!("{:?}", recent_tracks),
+           "Err(LastFMError(InvalidParameter(LastFMError { error: 6, message: \"User not found\", links: [] })))");
+    }
 }

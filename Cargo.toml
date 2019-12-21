@@ -1,22 +1,24 @@
 [package]
-name = "lastfm-rs"
-version = "0.2.0"
+name            = "lastfm-rs"
+version         = "0.2.0"
 
-authors = ["Kamran Mackey <kamranm1200@gmail.com"]
-license = "MIT"
+authors         = ["Kamran Mackey <kamranm1200@gmail.com"]
+license         = "MIT"
 
-description = "A Rust interface for Last.fm APIs"
-repository  = "https://github.com/RoxasShadow/rustfm"
-keywords    = ["lastfm"]
+description     = "A Rust interface for Last.fm APIs"
+repository      = "https://github.com/RoxasShadow/rustfm"
+keywords        = ["lastfm"]
 
 [lib]
-name = "rustfm"
-path = "src/lib.rs"
+name            = "rustfm"
+path            = "src/lib.rs"
 
 [dependencies]
-serde        = "1.0"
-serde_json   = "1.0"
-serde_derive = "1.0"
+serde           = "1.0"
+serde_json      = "1.0"
+serde_derive    = "1.0"
 
-hyper       = "0.10"
-url         = "1.5"
+hyper           = "0.10"
+url             = "2.1"
+
+tokio           = "0.2"
