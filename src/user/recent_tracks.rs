@@ -44,7 +44,7 @@ pub struct Track {
     /// The name of the track.
     pub name: String,
     /// The album the track is associated with.
-    pub album: RawData,
+    pub album: Album,
     /// The last.fm URL of the track.
     pub url: String,
     /// Whether or not a track is streamable.
@@ -58,6 +58,12 @@ pub struct Track {
 
 #[derive(Debug, Deserialize)]
 pub struct Artist {
+    #[serde(rename = "#text")]
+    pub name: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Album {
     #[serde(rename = "#text")]
     pub name: String,
 }
