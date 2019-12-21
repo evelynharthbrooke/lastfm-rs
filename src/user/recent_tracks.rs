@@ -149,12 +149,4 @@ mod tests {
         let recent_tracks = client.recent_tracks("MackeyKamran").with_limit(1).send();
         assert!(recent_tracks.is_ok());
     }
-
-    #[test]
-    fn test_recent_tracks_not_found() {
-        let mut client = make_client();
-        let recent_tracks = client.recent_tracks("nonesistinonesistinonesisti").send();
-        assert_eq!(&*format!("{:?}", recent_tracks),
-           "Err(LastFMError(InvalidParameter(LastFMError { error: 6, message: \"User not found\", links: [] })))");
-    }
 }

@@ -130,12 +130,4 @@ mod tests {
         println!("{:#?}", loved_tracks);
         assert!(loved_tracks.is_ok());
     }
-
-    #[test]
-    fn test_loved_tracks_not_found() {
-        let mut client = make_client();
-        let loved_tracks = client.loved_tracks("nonesistinonesistinonesisti").send();
-        assert_eq!(&*format!("{:?}", loved_tracks),
-           "Err(LastFMError(InvalidParameter(LastFMError { error: 6, message: \"User not found\", links: [] })))");
-    }
 }
