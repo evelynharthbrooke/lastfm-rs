@@ -9,7 +9,7 @@ use {Client, RequestBuilder};
 ///
 /// This is splitted off into two areas: One, the attributes (used
 /// for displaying various user-associated attributes), and two,
-/// the recent tracks the user has played.
+/// a specific number of tracks the user has marked as loved on Last.fm.
 ///
 /// For details on the attributes available, refer to [Attributes]. For
 /// details on the track information available, refer to [Track].
