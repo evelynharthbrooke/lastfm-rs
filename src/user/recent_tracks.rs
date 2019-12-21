@@ -1,5 +1,3 @@
-//!
-
 use error::{Error, LastFMError};
 use serde_json;
 use std::io::Read;
@@ -107,8 +105,8 @@ impl RecentTracks {
 }
 
 impl<'a> RequestBuilder<'a, RecentTracks> {
-    add_param!(with_limit, limit, u32);
-    add_param!(with_page, page, u32);
+    add_param!(with_limit, limit, usize);
+    add_param!(with_page, page, usize);
 
     pub fn send(&'a mut self) -> Result<RecentTracks, Error> {
         match self.client.request(&self.url) {
