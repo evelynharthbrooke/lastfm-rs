@@ -40,7 +40,7 @@ pub struct Track {
     pub artist: Artist,
     /// Various attributes associated with the track.
     #[serde(rename = "@attr")]
-    pub attrs: TrackAttributes,
+    pub attrs: Option<TrackAttributes>,
     /// The name of the track.
     pub name: String,
     /// The album the track is associated with.
@@ -75,7 +75,7 @@ pub struct TrackAttributes {
     /// "nowplaying" in the Last.fm API, however it was renamed
     /// to cohere to Rust's naming conventions.
     #[serde(rename = "nowplaying")]
-    pub now_playing: Option<String>,
+    pub now_playing: String,
 }
 
 #[derive(Debug, Deserialize)]
