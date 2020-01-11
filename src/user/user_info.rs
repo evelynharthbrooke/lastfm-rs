@@ -38,7 +38,7 @@ pub struct Registered {
     #[serde(rename = "unixtime")]
     pub unix_timestamp: String,
     #[serde(rename = "#text")]
-    pub friendly_date: u32,
+    pub friendly_date: i64, // use i64 format so that chrono likes us
 }
 
 impl UserInfo {
