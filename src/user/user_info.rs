@@ -13,7 +13,7 @@ pub struct UserInfo {
 #[derive(Debug, Deserialize)]
 pub struct User {
     #[serde(rename = "playcount")]
-    pub total_tracks: Option<String>,
+    pub total_tracks: String,
     #[serde(rename = "name")]
     pub username: String,
     pub url: String,
