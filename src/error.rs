@@ -38,7 +38,7 @@ pub enum LastFMErrorResponse {
 pub struct LastFMError {
     pub error:   i32,
     pub message: String,
-    pub links:   Vec<String>
+    pub links: Option<Vec<String>>,
 }
 
 impl From<LastFMError> for LastFMErrorResponse {
