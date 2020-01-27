@@ -17,7 +17,7 @@ pub struct User {
     #[serde(rename = "name")]
     pub username: String,
     pub url: String,
-    pub country: Option<String>,
+    pub country: String,
     #[serde(rename = "image")]
     pub images: Vec<Image>,
     pub registered: Registered,
