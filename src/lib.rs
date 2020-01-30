@@ -1,12 +1,14 @@
-#[macro_use]
-extern crate serde_derive;
-extern crate hyper;
+extern crate reqwest;
 extern crate serde;
 extern crate serde_json;
 extern crate url;
 
-use hyper::client::Client as HTTPClient;
+use reqwest::blocking::Client as ReqwestClient;
+use reqwest::blocking::Response;
+use reqwest::Error;
+
 use std::marker::PhantomData;
+
 use url::Url;
 
 macro_rules! add_param {
@@ -22,8 +24,6 @@ macro_rules! add_param {
 pub mod error;
 pub mod user;
 
-type HTTPResult = hyper::error::Result<hyper::client::response::Response>;
-
 pub struct RequestBuilder<'a, T: 'a> {
     client: &'a mut Client,
     url: Url,
@@ -32,14 +32,14 @@ pub struct RequestBuilder<'a, T: 'a> {
 
 pub struct Client {
     api_key: String,
-    http_client: HTTPClient,
+    http_client: ReqwestClient,
 }
 
 impl Client {
     pub fn new(api_key: &str) -> Client {
         Client {
             api_key: api_key.to_owned(),
-            http_client: HTTPClient::new(),
+            http_client: ReqwestClient::new(),
         }
     }
 
@@ -60,7 +60,7 @@ impl Client {
     }
 
     /// Send a GET request to given `Url`.
-    fn request(&mut self, url: &Url) -> HTTPResult {
+    fn request(&mut self, url: &Url) -> Result<Response, Error> {
         self.http_client.get(url.as_str()).send()
     }
 }

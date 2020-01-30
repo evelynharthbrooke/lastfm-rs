@@ -1,9 +1,12 @@
-use error::{Error, LastFMError};
+use crate::error::{Error, LastFMError};
+use crate::user::User;
+use crate::{Client, RequestBuilder};
+
+use serde::Deserialize;
 use serde_json;
+
 use std::io::Read;
 use std::marker::PhantomData;
-use user::User;
-use {Client, RequestBuilder};
 
 /// The main recent tracks structure.
 ///
@@ -147,7 +150,7 @@ impl<'a> Client {
 
 #[cfg(test)]
 mod tests {
-    use tests::make_client;
+    use crate::tests::make_client;
 
     #[test]
     fn test_recent_tracks() {

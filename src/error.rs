@@ -1,5 +1,5 @@
+use serde::Deserialize;
 use serde_json;
-use hyper;
 
 /// Kinds of errors that could happen at runtime.
 #[derive(Debug)]
@@ -8,7 +8,7 @@ pub enum Error {
     ParsingError(serde_json::error::Error),
 
     /// An error occurred during a request to the APIs
-    HTTPError(hyper::error::Error),
+    HTTPError(reqwest::Error),
 
     /// An error returned by the APIs
     LastFMError(LastFMErrorResponse)

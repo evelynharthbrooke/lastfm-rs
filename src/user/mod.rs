@@ -1,3 +1,5 @@
+use serde::Deserialize;
+
 pub mod recent_tracks;
 pub mod loved_tracks;
 pub mod user_info;
