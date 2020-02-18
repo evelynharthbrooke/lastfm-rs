@@ -145,7 +145,7 @@ mod tests {
     #[test]
     fn test_recent_tracks() {
         let mut client = make_client();
-        let recent_tracks = client.recent_tracks("MackeyKamran").with_limit(1).send();
+        let recent_tracks = client.recent_tracks("LAST.HQ").with_limit(1).send();
         assert!(recent_tracks.is_ok());
     }
 }

@@ -137,7 +137,7 @@ mod tests {
     #[test]
     fn test_top_artists() {
         let mut client = make_client();
-        let top_artists = client.top_artists("MackeyKamran").with_limit(1).send();
+        let top_artists = client.top_artists("LAST.HQ").with_limit(1).send();
         println!("{:#?}", top_artists);
         assert!(top_artists.is_ok());
     }
@@ -145,7 +145,7 @@ mod tests {
     #[test]
     fn test_top_artists_overall() {
         let mut client = make_client();
-        let top_artists_overall = client.top_artists("MackeyKamran").with_period(Overall).with_limit(5).send();
+        let top_artists_overall = client.top_artists("LAST.HQ").with_period(Overall).with_limit(5).send();
         println!("{:#?}", top_artists_overall);
         assert!(top_artists_overall.is_ok());
     }
@@ -153,7 +153,7 @@ mod tests {
     #[test]
     fn test_top_artists_7_days() {
         let mut client = make_client();
-        let top_artists_7_days = client.top_artists("MackeyKamran").with_period(SevenDays).with_limit(5).send();
+        let top_artists_7_days = client.top_artists("LAST.HQ").with_period(SevenDays).with_limit(5).send();
         println!("{:#?}", top_artists_7_days);
         assert!(top_artists_7_days.is_ok());
     }
@@ -161,7 +161,7 @@ mod tests {
     #[test]
     fn test_top_artists_1_month() {
         let mut client = make_client();
-        let top_artists_1_month = client.top_artists("MackeyKamran").with_period(OneMonth).with_limit(5).send();
+        let top_artists_1_month = client.top_artists("LAST.HQ").with_period(OneMonth).with_limit(5).send();
         println!("{:#?}", top_artists_1_month);
         assert!(top_artists_1_month.is_ok());
     }
@@ -169,7 +169,7 @@ mod tests {
     #[test]
     fn test_top_artists_3_months() {
         let mut client = make_client();
-        let top_artists_3_months = client.top_artists("MackeyKamran").with_period(ThreeMonths).with_limit(5).send();
+        let top_artists_3_months = client.top_artists("LAST.HQ").with_period(ThreeMonths).with_limit(5).send();
         println!("{:#?}", top_artists_3_months);
         assert!(top_artists_3_months.is_ok());
     }
@@ -177,7 +177,7 @@ mod tests {
     #[test]
     fn test_top_artists_6_months() {
         let mut client = make_client();
-        let top_artists_6_months = client.top_artists("MackeyKamran").with_period(SixMonths).with_limit(5).send();
+        let top_artists_6_months = client.top_artists("LAST.HQ").with_period(SixMonths).with_limit(5).send();
         println!("{:#?}", top_artists_6_months);
         assert!(top_artists_6_months.is_ok());
     }
@@ -185,7 +185,7 @@ mod tests {
     #[test]
     fn test_top_artists_12_months() {
         let mut client = make_client();
-        let top_artists_12_months = client.top_artists("MackeyKamran").with_period(OneYear).with_limit(5).send();
+        let top_artists_12_months = client.top_artists("LAST.HQ").with_period(OneYear).with_limit(5).send();
         println!("{:#?}", top_artists_12_months);
         assert!(top_artists_12_months.is_ok());
     }

@@ -83,7 +83,7 @@ mod tests {
     #[test]
     fn test_user_info() {
         let mut client = make_client();
-        let user_info = client.user_info("MackeyKamran").send();
+        let user_info = client.user_info("LAST.HQ").send();
         println!("{:#?}", user_info);
         assert!(user_info.is_ok());
     }

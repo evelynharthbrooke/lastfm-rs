@@ -123,7 +123,7 @@ mod tests {
     #[test]
     fn test_loved_tracks() {
         let mut client = make_client();
-        let loved_tracks = client.loved_tracks("MackeyKamran").with_limit(1).send();
+        let loved_tracks = client.loved_tracks("LAST.HQ").with_limit(1).send();
         println!("{:#?}", loved_tracks);
         assert!(loved_tracks.is_ok());
     }
