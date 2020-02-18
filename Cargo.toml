@@ -1,11 +1,13 @@
 [package]
 name            = "lastfm-rs"
-version         = "0.2.0"
-authors         = ["Kamran Mackey <kamranm1200@gmail.com"]
+version         = "0.2.1"
+authors         = ["Kamran Mackey <kamranm1200@gmail.com>"]
+readme          = "README.md"
 license         = "MIT"
 description     = "A friendly interface for interacting with the Last.fm API."
 repository      = "https://github.com/KamranMackey/lastfm-rs"
 keywords        = ["lastfm", "web", "api"]
+categories      = ["API bindings"]
 edition         = "2018"
 
 [lib]
