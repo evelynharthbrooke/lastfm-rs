@@ -11,7 +11,7 @@ pub enum Error {
     HTTPError(reqwest::Error),
 
     /// An error returned by the APIs
-    LastFMError(LastFMErrorResponse)
+    LastFMError(LastFMErrorResponse),
 }
 
 /// Representation of all the LastFM APIs errors
@@ -30,13 +30,13 @@ pub enum LastFMErrorResponse {
     InvalidMethodSignatureSupplied(LastFMError),
     GenericError(LastFMError),
     SuspendedAPIKey(LastFMError),
-    RateLimitExceeded(LastFMError)
+    RateLimitExceeded(LastFMError),
 }
 
 /// A generic LastFM response when the request can't be accomplished.
 #[derive(Deserialize, Debug)]
 pub struct LastFMError {
-    pub error:   i32,
+    pub error: i32,
     pub message: String,
     pub links: Option<Vec<String>>,
 }
@@ -58,7 +58,7 @@ impl From<LastFMError> for LastFMErrorResponse {
             16 => LastFMErrorResponse::GenericError(lastm_error),
             26 => LastFMErrorResponse::SuspendedAPIKey(lastm_error),
             29 => LastFMErrorResponse::RateLimitExceeded(lastm_error),
-            _  => LastFMErrorResponse::GenericError(lastm_error)
+            _ => LastFMErrorResponse::GenericError(lastm_error),
         }
     }
 }

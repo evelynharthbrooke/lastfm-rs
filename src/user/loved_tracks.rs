@@ -83,11 +83,7 @@ impl LovedTracks {
     pub fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, LovedTracks> {
         let url = client.build_url(vec![("method", "user.getLovedTracks"), ("user", user)]);
 
-        RequestBuilder {
-            client,
-            url,
-            phantom: PhantomData,
-        }
+        RequestBuilder { client, url, phantom: PhantomData }
     }
 }
 

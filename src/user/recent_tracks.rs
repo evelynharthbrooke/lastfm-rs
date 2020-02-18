@@ -105,11 +105,7 @@ impl RecentTracks {
     pub fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, RecentTracks> {
         let url = client.build_url(vec![("method", "user.getRecentTracks"), ("user", user)]);
 
-        RequestBuilder {
-            client,
-            url,
-            phantom: PhantomData,
-        }
+        RequestBuilder { client, url, phantom: PhantomData }
     }
 }
 
@@ -126,13 +122,7 @@ impl<'a> RequestBuilder<'a, RecentTracks> {
                 match serde_json::from_str::<LastFMError>(&*body) {
                     Ok(lastm_error) => Err(Error::LastFMError(lastm_error.into())),
                     Err(_) => match serde_json::from_str::<User>(&*body) {
-                        Ok(user) => {
-                            println!("{:#?}", user);
-                            Ok(user
-                                .recent_tracks
-                                .ok_or("Error while getting recent tracks")
-                                .unwrap())
-                        }
+                        Ok(user) => Ok(user.recent_tracks.ok_or("Error while getting recent tracks").unwrap()),
                         Err(e) => Err(Error::ParsingError(e)),
                     },
                 }

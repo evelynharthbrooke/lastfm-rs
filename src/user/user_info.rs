@@ -46,11 +46,7 @@ impl UserInfo {
     pub fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, UserInfo> {
         let url = client.build_url(vec![("method", "user.getInfo"), ("user", user)]);
 
-        RequestBuilder {
-            client,
-            url,
-            phantom: PhantomData,
-        }
+        RequestBuilder { client, url, phantom: PhantomData }
     }
 }
 
