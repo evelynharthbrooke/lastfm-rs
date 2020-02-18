@@ -1,5 +1,4 @@
 use serde::Deserialize;
-use serde_json;
 
 /// Kinds of errors that could happen at runtime.
 #[derive(Debug)]

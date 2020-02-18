@@ -1,7 +1,6 @@
 use crate::error::{Error, LastFMError};
 use crate::{Client, RequestBuilder};
 use serde::Deserialize;
-use serde_json;
 use std::io::Read;
 use std::marker::PhantomData;
 
