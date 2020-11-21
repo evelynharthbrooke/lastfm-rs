@@ -5,7 +5,6 @@ use crate::{Client, RequestBuilder};
 use serde::Deserialize;
 use serde_json;
 
-use std::io::Read;
 use std::marker::PhantomData;
 
 /// The main recent tracks structure.
@@ -102,8 +101,8 @@ pub struct Date {
 }
 
 impl RecentTracks {
-    pub fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, RecentTracks> {
-        let url = client.build_url(vec![("method", "user.getRecentTracks"), ("user", user)]);
+    pub async fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, RecentTracks> {
+        let url = client.build_url(vec![("method", "user.getRecentTracks"), ("user", user)]).await;
 
         RequestBuilder { client, url, phantom: PhantomData }
     }
@@ -113,15 +112,13 @@ impl<'a> RequestBuilder<'a, RecentTracks> {
     add_param!(with_limit, limit, usize);
     add_param!(with_page, page, usize);
 
-    pub fn send(&'a mut self) -> Result<RecentTracks, Error> {
-        match self.client.request(&self.url) {
-            Ok(mut response) => {
-                let mut body = String::new();
-                response.read_to_string(&mut body).unwrap();
-
-                match serde_json::from_str::<LastFMError>(&*body) {
+    pub async fn send(&'a mut self) -> Result<RecentTracks, Error> {
+        match self.client.request(&self.url).await {
+            Ok(response) => {
+                let body = response.text().await.unwrap();
+                match serde_json::from_str::<LastFMError>(&body) {
                     Ok(lastm_error) => Err(Error::LastFMError(lastm_error.into())),
-                    Err(_) => match serde_json::from_str::<User>(&*body) {
+                    Err(_) => match serde_json::from_str::<User>(&body) {
                         Ok(user) => Ok(user.recent_tracks.ok_or("Error while getting recent tracks").unwrap()),
                         Err(e) => Err(Error::ParsingError(e)),
                     },
@@ -133,19 +130,7 @@ impl<'a> RequestBuilder<'a, RecentTracks> {
 }
 
 impl<'a> Client {
-    pub fn recent_tracks(&'a mut self, user: &str) -> RequestBuilder<'a, RecentTracks> {
-        RecentTracks::build(self, user)
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::tests::make_client;
-
-    #[test]
-    fn test_recent_tracks() {
-        let mut client = make_client();
-        let recent_tracks = client.recent_tracks("LAST.HQ").with_limit(1).send();
-        assert!(recent_tracks.is_ok());
+    pub async fn recent_tracks(&'a mut self, user: &str) -> RequestBuilder<'a, RecentTracks> {
+        RecentTracks::build(self, user).await
     }
 }

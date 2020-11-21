@@ -2,7 +2,6 @@ use crate::error::{Error, LastFMError};
 use crate::user::User;
 use crate::{Client, RequestBuilder};
 use serde::Deserialize;
-use std::io::Read;
 use std::marker::PhantomData;
 
 /// The main loved tracks structure.
@@ -79,9 +78,8 @@ pub struct Image {
 }
 
 impl LovedTracks {
-    pub fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, LovedTracks> {
-        let url = client.build_url(vec![("method", "user.getLovedTracks"), ("user", user)]);
-
+    pub async fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, LovedTracks> {
+        let url = client.build_url(vec![("method", "user.getLovedTracks"), ("user", user)]).await;
         RequestBuilder { client, url, phantom: PhantomData }
     }
 }
@@ -90,12 +88,10 @@ impl<'a> RequestBuilder<'a, LovedTracks> {
     add_param!(with_limit, limit, usize);
     add_param!(with_page, page, usize);
 
-    pub fn send(&'a mut self) -> Result<LovedTracks, Error> {
-        match self.client.request(&self.url) {
-            Ok(mut response) => {
-                let mut body = String::new();
-                response.read_to_string(&mut body).unwrap();
-
+    pub async fn send(&'a mut self) -> Result<LovedTracks, Error> {
+        match self.client.request(&self.url).await {
+            Ok(response) => {
+                let body = response.text().await.unwrap();
                 match serde_json::from_str::<LastFMError>(&*body) {
                     Ok(lastm_error) => Err(Error::LastFMError(lastm_error.into())),
                     Err(_) => match serde_json::from_str::<User>(&*body) {
@@ -110,20 +106,7 @@ impl<'a> RequestBuilder<'a, LovedTracks> {
 }
 
 impl<'a> Client {
-    pub fn loved_tracks(&'a mut self, user: &str) -> RequestBuilder<'a, LovedTracks> {
-        LovedTracks::build(self, user)
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::tests::make_client;
-
-    #[test]
-    fn test_loved_tracks() {
-        let mut client = make_client();
-        let loved_tracks = client.loved_tracks("LAST.HQ").with_limit(1).send();
-        println!("{:#?}", loved_tracks);
-        assert!(loved_tracks.is_ok());
+    pub async fn loved_tracks(&'a mut self, user: &str) -> RequestBuilder<'a, LovedTracks> {
+        LovedTracks::build(self, user).await
     }
 }

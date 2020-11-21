@@ -2,7 +2,6 @@ use crate::error::{Error, LastFMError};
 use crate::user::User;
 use crate::{Client, RequestBuilder};
 use serde::Deserialize;
-use std::io::Read;
 use std::marker::PhantomData;
 
 /// The main top artists structure.
@@ -58,9 +57,8 @@ pub struct Image {
 }
 
 impl TopArtists {
-    pub fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, TopArtists> {
-        let url = client.build_url(vec![("method", "user.getTopArtists"), ("user", user)]);
-
+    pub async fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, TopArtists> {
+        let url = client.build_url(vec![("method", "user.getTopArtists"), ("user", user)]).await;
         RequestBuilder { client, url, phantom: PhantomData }
     }
 }
@@ -100,18 +98,16 @@ impl ToString for Period {
 
 impl<'a> RequestBuilder<'a, TopArtists> {
     add_param!(with_limit, limit, usize);
-    add_param!(with_period, period, Period);
+    add_param!(within_period, period, Period);
     add_param!(with_page, page, usize);
 
-    pub fn send(&'a mut self) -> Result<TopArtists, Error> {
-        match self.client.request(&self.url) {
-            Ok(mut response) => {
-                let mut body = String::new();
-                response.read_to_string(&mut body).unwrap();
-
-                match serde_json::from_str::<LastFMError>(&*body) {
+    pub async fn send(&'a mut self) -> Result<TopArtists, Error> {
+        match self.client.request(&self.url).await {
+            Ok(response) => {
+                let body = response.text().await.unwrap();
+                match serde_json::from_str::<LastFMError>(&body) {
                     Ok(lastm_error) => Err(Error::LastFMError(lastm_error.into())),
-                    Err(_) => match serde_json::from_str::<User>(&*body) {
+                    Err(_) => match serde_json::from_str::<User>(&body) {
                         Ok(user) => Ok(user.top_artists.unwrap()),
                         Err(e) => Err(Error::ParsingError(e)),
                     },
@@ -123,69 +119,7 @@ impl<'a> RequestBuilder<'a, TopArtists> {
 }
 
 impl<'a> Client {
-    pub fn top_artists(&'a mut self, user: &str) -> RequestBuilder<'a, TopArtists> {
-        TopArtists::build(self, user)
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::tests::make_client;
-    use crate::user::top_artists::Period::*;
-
-    #[test]
-    fn test_top_artists() {
-        let mut client = make_client();
-        let top_artists = client.top_artists("LAST.HQ").with_limit(1).send();
-        println!("{:#?}", top_artists);
-        assert!(top_artists.is_ok());
-    }
-
-    #[test]
-    fn test_top_artists_overall() {
-        let mut client = make_client();
-        let top_artists_overall = client.top_artists("LAST.HQ").with_period(Overall).with_limit(5).send();
-        println!("{:#?}", top_artists_overall);
-        assert!(top_artists_overall.is_ok());
-    }
-
-    #[test]
-    fn test_top_artists_7_days() {
-        let mut client = make_client();
-        let top_artists_7_days = client.top_artists("LAST.HQ").with_period(SevenDays).with_limit(5).send();
-        println!("{:#?}", top_artists_7_days);
-        assert!(top_artists_7_days.is_ok());
-    }
-
-    #[test]
-    fn test_top_artists_1_month() {
-        let mut client = make_client();
-        let top_artists_1_month = client.top_artists("LAST.HQ").with_period(OneMonth).with_limit(5).send();
-        println!("{:#?}", top_artists_1_month);
-        assert!(top_artists_1_month.is_ok());
-    }
-
-    #[test]
-    fn test_top_artists_3_months() {
-        let mut client = make_client();
-        let top_artists_3_months = client.top_artists("LAST.HQ").with_period(ThreeMonths).with_limit(5).send();
-        println!("{:#?}", top_artists_3_months);
-        assert!(top_artists_3_months.is_ok());
-    }
-
-    #[test]
-    fn test_top_artists_6_months() {
-        let mut client = make_client();
-        let top_artists_6_months = client.top_artists("LAST.HQ").with_period(SixMonths).with_limit(5).send();
-        println!("{:#?}", top_artists_6_months);
-        assert!(top_artists_6_months.is_ok());
-    }
-
-    #[test]
-    fn test_top_artists_12_months() {
-        let mut client = make_client();
-        let top_artists_12_months = client.top_artists("LAST.HQ").with_period(OneYear).with_limit(5).send();
-        println!("{:#?}", top_artists_12_months);
-        assert!(top_artists_12_months.is_ok());
+    pub async fn top_artists(&'a mut self, user: &str) -> RequestBuilder<'a, TopArtists> {
+        TopArtists::build(self, user).await
     }
 }

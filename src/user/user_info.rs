@@ -1,7 +1,6 @@
 use crate::error::{Error, LastFMError};
 use crate::{Client, RequestBuilder};
 use serde::Deserialize;
-use std::io::Read;
 use std::marker::PhantomData;
 
 #[derive(Debug, Deserialize)]
@@ -42,23 +41,21 @@ pub struct Registered {
 }
 
 impl UserInfo {
-    pub fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, UserInfo> {
-        let url = client.build_url(vec![("method", "user.getInfo"), ("user", user)]);
+    pub async fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, UserInfo> {
+        let url = client.build_url(vec![("method", "user.getInfo"), ("user", user)]).await;
 
         RequestBuilder { client, url, phantom: PhantomData }
     }
 }
 
 impl<'a> RequestBuilder<'a, UserInfo> {
-    pub fn send(&'a mut self) -> Result<UserInfo, Error> {
-        match self.client.request(&self.url) {
-            Ok(mut response) => {
-                let mut body = String::new();
-                response.read_to_string(&mut body).unwrap();
-
-                match serde_json::from_str::<LastFMError>(&*body) {
+    pub async fn send(&'a mut self) -> Result<UserInfo, Error> {
+        match self.client.request(&self.url).await {
+            Ok(response) => {
+                let body = response.text().await.unwrap();
+                match serde_json::from_str::<LastFMError>(&body) {
                     Ok(lastm_error) => Err(Error::LastFMError(lastm_error.into())),
-                    Err(_) => match serde_json::from_str::<UserInfo>(&*body) {
+                    Err(_) => match serde_json::from_str::<UserInfo>(&body) {
                         Ok(user) => Ok(user),
                         Err(e) => Err(Error::ParsingError(e)),
                     },
@@ -70,20 +67,7 @@ impl<'a> RequestBuilder<'a, UserInfo> {
 }
 
 impl<'a> Client {
-    pub fn user_info(&'a mut self, user: &str) -> RequestBuilder<'a, UserInfo> {
-        UserInfo::build(self, user)
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::tests::make_client;
-
-    #[test]
-    fn test_user_info() {
-        let mut client = make_client();
-        let user_info = client.user_info("LAST.HQ").send();
-        println!("{:#?}", user_info);
-        assert!(user_info.is_ok());
+    pub async fn user_info(&'a mut self, user: &str) -> RequestBuilder<'a, UserInfo> {
+        UserInfo::build(self, user).await
     }
 }
