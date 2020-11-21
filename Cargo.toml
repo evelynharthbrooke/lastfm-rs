@@ -1,6 +1,6 @@
 [package]
 name            = "lastfm-rs"
-version         = "0.3.0"
+version         = "0.3.1"
 authors         = ["Kamran Mackey <kamranm1200@gmail.com>"]
 readme          = "README.md"
 license         = "MIT"
