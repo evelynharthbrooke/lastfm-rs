@@ -11,7 +11,7 @@ categories      = ["api-bindings"]
 edition         = "2018"
 
 [lib]
-name            = "rustfm"
+name            = "lastfm_rs"
 path            = "src/lib.rs"
 
 [dependencies]
