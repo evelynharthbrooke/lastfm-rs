@@ -42,6 +42,13 @@ impl Client {
         }
     }
 
+    pub fn from_reqwest_client(client: ReqwestClient, api_key: &str) -> Client {
+        Client {
+            api_key: api_key.to_owned(),
+            client,
+        }
+    }
+
     /// Build a new URL with given query params pointing to the LastFM APIs.
     async fn build_url(&self, params: Vec<(&str, &str)>) -> Url {
         let mut url = Url::parse("http://ws.audioscrobbler.com/2.0/").unwrap();
