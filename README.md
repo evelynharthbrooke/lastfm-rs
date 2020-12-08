@@ -6,8 +6,8 @@ A friendly Rust library for interacting with the Last.fm API endpoints.
 
 As of version 0.3.x, the library is only compatible with async Rust. No support is available
 for synchronous code / blocking I/O, however version 0.2.x supports this. Please be advised
-however that 0.2.x of the library is no longer being updated with new features; only 0.3.x is
-being updated moving forward.
+however that 0.2.x of the library is no longer being updated with new features; only 0.3.x
+and later are being updated moving forward due to the lack of development horsepower.
 
 ## Supported endpoints
 
