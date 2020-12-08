@@ -21,7 +21,7 @@ pub struct User {
     pub images: Vec<Image>,
     pub registered: Registered,
     #[serde(rename = "realname")]
-    pub display_name: Option<String>,
+    pub display_name: String,
 }
 
 #[derive(Debug, Deserialize)]
