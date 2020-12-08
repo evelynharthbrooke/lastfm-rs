@@ -12,7 +12,7 @@ Only a minor release today with a few improvements and a bug fix.
 
 ### Improvements / Minor Features
 
-- Added method to use predefined `reqwest` client (thanks [@drklee3]! — [PR #1][pr:1!])
+- Added method to use predefined `reqwest` client (thanks [@drklee3]! — [PR #1][pr:1]!)
 - Improved error handling (thanks again [@drklee3]! — [PR #2][pr:2])
 
 ### Bug Fixes
