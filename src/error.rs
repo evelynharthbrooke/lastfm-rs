@@ -53,20 +53,20 @@ pub enum LastFMErrorResponse {
 impl Display for LastFMErrorResponse {
     fn fmt(&self, f: &mut Formatter) -> FmtResult {
         match *self {
-            LastFMErrorResponse::InvalidService(ref inner) => write!(f, "InvalidService: {}", inner.message),
-            LastFMErrorResponse::InvalidMethod(ref inner) => write!(f, "InvalidMethod: {}", inner.message),
-            LastFMErrorResponse::AuthenticationFailed(ref inner) => write!(f, "AuthenticationFailed: {}", inner.message),
-            LastFMErrorResponse::InvalidFormat(ref inner) => write!(f, "InvalidFormat: {}", inner.message),
-            LastFMErrorResponse::InvalidParameter(ref inner) => write!(f, "InvalidParameter: {}", inner.message),
-            LastFMErrorResponse::InvalidResourceSpecified(ref inner) => write!(f, "InvalidResourceSpecified: {}", inner.message),
-            LastFMErrorResponse::OperationFailed(ref inner) => write!(f, "OperationFailed: {}", inner.message),
-            LastFMErrorResponse::InvalidSessionKey(ref inner) => write!(f, "InvalidSessionKey: {}", inner.message),
-            LastFMErrorResponse::InvalidAPIKey(ref inner) => write!(f, "InvalidAPIKey: {}", inner.message),
-            LastFMErrorResponse::ServiceOffline(ref inner) => write!(f, "ServiceOffline: {}", inner.message),
-            LastFMErrorResponse::InvalidMethodSignatureSupplied(ref inner) => write!(f, "InvalidMethodSignatureSupplied: {}", inner.message),
-            LastFMErrorResponse::GenericError(ref inner) => write!(f, "GenericError: {}", inner.message),
-            LastFMErrorResponse::SuspendedAPIKey(ref inner) => write!(f, "SuspendedAPIKey: {}", inner.message),
-            LastFMErrorResponse::RateLimitExceeded(ref inner) => write!(f, "RateLimitExceeded: {}", inner.message),
+            LastFMErrorResponse::InvalidService(ref inner) => write!(f, "{}", inner.message),
+            LastFMErrorResponse::InvalidMethod(ref inner) => write!(f, "{}", inner.message),
+            LastFMErrorResponse::AuthenticationFailed(ref inner) => write!(f, "{}", inner.message),
+            LastFMErrorResponse::InvalidFormat(ref inner) => write!(f, "{}", inner.message),
+            LastFMErrorResponse::InvalidParameter(ref inner) => write!(f, "{}", inner.message),
+            LastFMErrorResponse::InvalidResourceSpecified(ref inner) => write!(f, "{}", inner.message),
+            LastFMErrorResponse::OperationFailed(ref inner) => write!(f, "{}", inner.message),
+            LastFMErrorResponse::InvalidSessionKey(ref inner) => write!(f, "{}", inner.message),
+            LastFMErrorResponse::InvalidAPIKey(ref inner) => write!(f, "{}", inner.message),
+            LastFMErrorResponse::ServiceOffline(ref inner) => write!(f, "{}", inner.message),
+            LastFMErrorResponse::InvalidMethodSignatureSupplied(ref inner) => write!(f, "{}", inner.message),
+            LastFMErrorResponse::GenericError(ref inner) => write!(f, "{}", inner.message),
+            LastFMErrorResponse::SuspendedAPIKey(ref inner) => write!(f, "{}", inner.message),
+            LastFMErrorResponse::RateLimitExceeded(ref inner) => write!(f, "{}", inner.message),
         }
     }
 }
