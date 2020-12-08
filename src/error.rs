@@ -1,4 +1,6 @@
 use serde::Deserialize;
+use std::error::Error as StdError;
+use std::fmt::{Display, Formatter, Result as FmtResult};
 
 /// Kinds of errors that could happen at runtime.
 #[derive(Debug)]
@@ -11,6 +13,22 @@ pub enum Error {
 
     /// An error returned by the APIs
     LastFMError(LastFMErrorResponse),
+}
+
+impl StdError for Error {
+    fn source(&self) -> Option<&(dyn StdError + 'static)> {
+        Some(self)
+    }
+}
+
+impl Display for Error {
+    fn fmt(&self, f: &mut Formatter) -> FmtResult {
+        match *self {
+            Error::ParsingError(ref inner) => inner.fmt(f),
+            Error::HTTPError(ref inner) => inner.fmt(f),
+            Error::LastFMError(ref inner) => inner.fmt(f),
+        }
+    }
 }
 
 /// Representation of all the LastFM APIs errors
@@ -30,6 +48,27 @@ pub enum LastFMErrorResponse {
     GenericError(LastFMError),
     SuspendedAPIKey(LastFMError),
     RateLimitExceeded(LastFMError),
+}
+
+impl Display for LastFMErrorResponse {
+    fn fmt(&self, f: &mut Formatter) -> FmtResult {
+        match *self {
+            LastFMErrorResponse::InvalidService(ref inner) => write!(f, "InvalidService: {}", inner.message),
+            LastFMErrorResponse::InvalidMethod(ref inner) => write!(f, "InvalidMethod: {}", inner.message),
+            LastFMErrorResponse::AuthenticationFailed(ref inner) => write!(f, "AuthenticationFailed: {}", inner.message),
+            LastFMErrorResponse::InvalidFormat(ref inner) => write!(f, "InvalidFormat: {}", inner.message),
+            LastFMErrorResponse::InvalidParameter(ref inner) => write!(f, "InvalidParameter: {}", inner.message),
+            LastFMErrorResponse::InvalidResourceSpecified(ref inner) => write!(f, "InvalidResourceSpecified: {}", inner.message),
+            LastFMErrorResponse::OperationFailed(ref inner) => write!(f, "OperationFailed: {}", inner.message),
+            LastFMErrorResponse::InvalidSessionKey(ref inner) => write!(f, "InvalidSessionKey: {}", inner.message),
+            LastFMErrorResponse::InvalidAPIKey(ref inner) => write!(f, "InvalidAPIKey: {}", inner.message),
+            LastFMErrorResponse::ServiceOffline(ref inner) => write!(f, "ServiceOffline: {}", inner.message),
+            LastFMErrorResponse::InvalidMethodSignatureSupplied(ref inner) => write!(f, "InvalidMethodSignatureSupplied: {}", inner.message),
+            LastFMErrorResponse::GenericError(ref inner) => write!(f, "GenericError: {}", inner.message),
+            LastFMErrorResponse::SuspendedAPIKey(ref inner) => write!(f, "SuspendedAPIKey: {}", inner.message),
+            LastFMErrorResponse::RateLimitExceeded(ref inner) => write!(f, "RateLimitExceeded: {}", inner.message),
+        }
+    }
 }
 
 /// A generic LastFM response when the request can't be accomplished.
