@@ -13,10 +13,10 @@ it will be considered.
 
 ### User
 
-`user.getRecentTracks`
+`user.getRecentTracks` - Gets a users' recent tracks.
 
-`user.getLovedTracks`
+`user.getLovedTracks` - Gets a users' loved tracks.
 
-`user.getTopArtists`
+`user.getTopArtists` - Gets a users' top artists.
 
-`user.getUserInfo`
+`user.getUserInfo` - Gets basic information about a given user.
