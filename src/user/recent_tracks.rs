@@ -1,5 +1,6 @@
+use chrono::{DateTime, Utc};
+use chrono::serde::ts_seconds::deserialize as from_ts;
 use serde::Deserialize;
-
 use std::marker::PhantomData;
 
 use crate::{
@@ -77,10 +78,10 @@ pub struct Date {
     /// Timestamp.
     #[serde(rename = "uts")]
     pub unix_timestamp: String,
-    /// The friendly date of when a [Track] was first scrobbled
-    /// on Last.fm.
+    /// The date of when a [Track] was first scrobbled on Last.fm.
     #[serde(rename = "#text")]
-    pub friendly_date: String,
+    #[serde(deserialize_with = "from_ts")]
+    pub date: DateTime<Utc>,
 }
 
 impl RecentTracks {
