@@ -1,3 +1,5 @@
+use chrono::{DateTime, Utc};
+use chrono::serde::ts_seconds::deserialize as from_ts;
 use serde::Deserialize;
 use std::marker::PhantomData;
 
@@ -47,13 +49,12 @@ pub struct Registered {
     /// The UNIX timestamp of when the user registered their Last.fm account.
     #[serde(rename = "unixtime")]
     pub unix_timestamp: String,
-    /// The i64 timestamp of when the user registered their Last.fm account. This
-    /// is necessary to be in i64 for when users want to use the [chrono] date & time
-    /// library.
+    /// [chrono] DateTime
     ///
     /// [chrono]: https://crates.io/crates/chrono
     #[serde(rename = "#text")]
-    pub friendly_date: i64,
+    #[serde(deserialize_with = "from_ts")]
+    pub date: DateTime<Utc>,
 }
 
 impl UserInfo {
