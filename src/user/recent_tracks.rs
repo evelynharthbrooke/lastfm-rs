@@ -1,5 +1,5 @@
 use serde::Deserialize;
-use serde_json;
+
 use std::marker::PhantomData;
 
 use crate::{
