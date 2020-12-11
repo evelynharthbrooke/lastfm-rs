@@ -1,49 +1,64 @@
-use crate::error::{Error, LastFMError};
-use crate::{Client, RequestBuilder};
 use serde::Deserialize;
 use std::marker::PhantomData;
 
+use crate::{
+    error::{Error, LastFMError},
+    model::Image,
+    Client, RequestBuilder,
+};
+
 #[derive(Debug, Deserialize)]
 pub struct UserInfo {
-    #[serde(rename = "user")]
     pub user: User,
 }
 
+/// The main user structure. This contains all of the necessary profile fields
+/// exposed by the Last.fm API, such as scrobble count, username, the date of
+/// when the user joined Last.fm, and more.
 #[derive(Debug, Deserialize)]
 pub struct User {
+    /// The total scrobbles or plays for a user.
     #[serde(rename = "playcount")]
-    pub total_tracks: String,
+    pub scrobbles: String,
     #[serde(rename = "name")]
+    /// The user's username. Assigned when the user
+    /// created their Last.fm account.
     pub username: String,
+    /// A link to the user's Last.fm profile.
     pub url: String,
+    /// The user's listed country. Will be an empty string if
+    /// the user has not set their country.
     pub country: String,
+    /// The user's profile picture(s), in multiple sizes.
     #[serde(rename = "image")]
     pub images: Vec<Image>,
+    /// The registration / join date of the user.
     pub registered: Registered,
+    /// The display name of the user.
+    ///
+    /// This will be an empty string if the user has not yet
+    /// set their display name.
     #[serde(rename = "realname")]
     pub display_name: String,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct Image {
-    #[serde(rename = "size")]
-    pub image_size: String,
-    #[serde(rename = "#text")]
-    pub image_url: String,
-}
-
-#[derive(Debug, Deserialize)]
 pub struct Registered {
+    /// The UNIX timestamp of when the user registered their Last.fm account.
     #[serde(rename = "unixtime")]
     pub unix_timestamp: String,
+    /// The i64 timestamp of when the user registered their Last.fm account. This
+    /// is necessary to be in i64 for when users want to use the [chrono] date & time
+    /// library.
+    ///
+    /// [chrono]: https://crates.io/crates/chrono
     #[serde(rename = "#text")]
-    pub friendly_date: i64, // use i64 format so that chrono likes us
+    pub friendly_date: i64,
 }
 
 impl UserInfo {
     pub async fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, UserInfo> {
         let url = client.build_url(vec![("method", "user.getInfo"), ("user", user)]).await;
-
         RequestBuilder { client, url, phantom: PhantomData }
     }
 }
@@ -67,7 +82,5 @@ impl<'a> RequestBuilder<'a, UserInfo> {
 }
 
 impl<'a> Client {
-    pub async fn user_info(&'a mut self, user: &str) -> RequestBuilder<'a, UserInfo> {
-        UserInfo::build(self, user).await
-    }
+    pub async fn user_info(&'a mut self, user: &str) -> RequestBuilder<'a, UserInfo> { UserInfo::build(self, user).await }
 }

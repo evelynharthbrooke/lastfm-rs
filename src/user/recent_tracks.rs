@@ -1,11 +1,13 @@
-use crate::error::{Error, LastFMError};
-use crate::user::User;
-use crate::{Client, RequestBuilder};
-
 use serde::Deserialize;
 use serde_json;
-
 use std::marker::PhantomData;
+
+use crate::{
+    error::{Error, LastFMError},
+    model::{Attributes, Image},
+    user::User,
+    Client, RequestBuilder,
+};
 
 /// The main recent tracks structure.
 ///
@@ -23,17 +25,6 @@ pub struct RecentTracks {
     /// A [Vec] containiing recent [Track]s.
     #[serde(rename = "track")]
     pub tracks: Vec<Track>,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Attributes {
-    pub page: String,
-    pub total: String,
-    pub user: String,
-    #[serde(rename = "perPage")]
-    pub per_page: String,
-    #[serde(rename = "totalPages")]
-    pub total_pages: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -60,12 +51,14 @@ pub struct Track {
 
 #[derive(Debug, Deserialize)]
 pub struct Artist {
+    /// The name of the artist.
     #[serde(rename = "#text")]
     pub name: String,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct Album {
+    /// The name of the album.
     #[serde(rename = "#text")]
     pub name: String,
 }
@@ -73,19 +66,9 @@ pub struct Album {
 #[derive(Debug, Deserialize)]
 pub struct TrackAttributes {
     /// Whether or not the user's first available track is the
-    /// one the user is currently playing. This is technically
-    /// "nowplaying" in the Last.fm API, however it was renamed
-    /// to cohere to Rust's naming conventions.
+    /// one the user is currently playing.
     #[serde(rename = "nowplaying")]
     pub now_playing: String,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Image {
-    #[serde(rename = "size")]
-    pub image_size: String,
-    #[serde(rename = "#text")]
-    pub image_url: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -130,7 +113,5 @@ impl<'a> RequestBuilder<'a, RecentTracks> {
 }
 
 impl<'a> Client {
-    pub async fn recent_tracks(&'a mut self, user: &str) -> RequestBuilder<'a, RecentTracks> {
-        RecentTracks::build(self, user).await
-    }
+    pub async fn recent_tracks(&'a mut self, user: &str) -> RequestBuilder<'a, RecentTracks> { RecentTracks::build(self, user).await }
 }

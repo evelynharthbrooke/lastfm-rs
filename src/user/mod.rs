@@ -1,3 +1,8 @@
+//! Last.fm User API Endpoints
+//!
+//! Contains structs and methods related to working with the user-related endpoints
+//! available through the Last.fm API.
+
 use serde::Deserialize;
 
 pub mod loved_tracks;

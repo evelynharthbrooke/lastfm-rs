@@ -6,6 +6,20 @@ set out by the [Semantic Versioning][semver] specification.
 **NOTE**: This changelog only covers 0.3.x onwards. 0.2.x were more of a starting foundation, and as such I don't see
 much point in detailing those releases.
 
+## 0.4.0 — The Great Documentation Rework (December 10, 2020)
+
+This release brings some significant improvements to the library's documentation. Prior to this release, this library
+had some pretty lackluster and incomplete documentation, so the aim for this release was to make an attempt to improve
+the documentation in a noticable way. Please note however that examples are still not present as of this release, however
+I intend on adding some examples in the near future with a later release. Anyways, onto the changelog!
+
+### Improvements
+
+- Dramatically improved documentation. No examples yet, this will be a focus for a future release.
+- Moved a couple models to a file under `model` to reduce code duplication.
+- Renamed "total_tracks" and "playcount" to "scrobbles". This is the internal name used by Last.fm,
+  so I figured that it makes a tad bit more sense to use Last.fm's naming scheme.
+
 ## 0.3.3 — December 8, 2020
 
 Only a minor release today with a few improvements and a bug fix.

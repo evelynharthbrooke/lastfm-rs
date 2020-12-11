@@ -1,8 +1,12 @@
-use crate::error::{Error, LastFMError};
-use crate::user::User;
-use crate::{Client, RequestBuilder};
 use serde::Deserialize;
 use std::marker::PhantomData;
+
+use crate::{
+    error::{Error, LastFMError},
+    model::{Attributes, Image},
+    user::User,
+    Client, RequestBuilder,
+};
 
 /// The main loved tracks structure.
 ///
@@ -20,33 +24,35 @@ pub struct LovedTracks {
     pub tracks: Vec<Track>,
 }
 
-#[derive(Debug, Deserialize)]
-pub struct Attributes {
-    pub page: String,
-    pub total: String,
-    pub user: String,
-    #[serde(rename = "perPage")]
-    pub per_page: String,
-    #[serde(rename = "totalPages")]
-    pub total_pages: String,
-}
-
+/// Contains information about the given track that the
+/// user Loved.
 #[derive(Debug, Deserialize)]
 pub struct Track {
+    /// The artist who published the given track.
     pub artist: Artist,
+    /// The MusicBrainz ID for the given track.
     pub mbid: String,
+    /// The date of when the user loved the track.
     pub date: Option<Date>,
+    /// The name of the track.
     pub name: String,
+    /// The Last.fm URL of the track.
     pub url: String,
+    /// The cover art for the given track. Available in small, medium,
+    /// and large sizes.
     #[serde(rename = "image")]
     pub images: Vec<Image>,
+    /// Whether or not the track is streamable.
     pub streamable: Streamable,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct Artist {
+    /// The Last.fm URL for the given artist.
     pub url: String,
+    /// The name of the given artist.
     pub name: String,
+    /// The MusicBrainz ID of the given artist.
     pub mbid: String,
 }
 
@@ -62,19 +68,14 @@ pub struct Date {
     pub friendly_date: String,
 }
 
+/// The streamable struct.
+///
+/// Available if the given track is available for streaming.
 #[derive(Debug, Deserialize)]
 pub struct Streamable {
     pub fulltrack: String,
     #[serde(rename = "#text")]
     pub text: String,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Image {
-    #[serde(rename = "size")]
-    pub image_size: String,
-    #[serde(rename = "#text")]
-    pub image_url: String,
 }
 
 impl LovedTracks {
@@ -106,7 +107,5 @@ impl<'a> RequestBuilder<'a, LovedTracks> {
 }
 
 impl<'a> Client {
-    pub async fn loved_tracks(&'a mut self, user: &str) -> RequestBuilder<'a, LovedTracks> {
-        LovedTracks::build(self, user).await
-    }
+    pub async fn loved_tracks(&'a mut self, user: &str) -> RequestBuilder<'a, LovedTracks> { LovedTracks::build(self, user).await }
 }
