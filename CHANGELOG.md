@@ -20,6 +20,10 @@ I intend on adding some examples in the near future with a later release. Anyway
 - Renamed "total_tracks" and "playcount" to "scrobbles". This is the internal name used by Last.fm,
   so I figured that it makes a tad bit more sense to use Last.fm's naming scheme.
 
+### Bug Fixes
+
+- Removed unnecessary serde_json use statemnet.
+
 ## 0.3.3 — December 8, 2020
 
 Only a minor release today with a few improvements and a bug fix.
