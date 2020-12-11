@@ -21,7 +21,7 @@
 //! section of your `Cargo.toml` file in your project's main directory.
 //!
 //! ```toml
-//! lastfm_rs = "0.3"
+//! lastfm_rs = "0.4"
 //! ```
 //!
 //! [Last.fm API Documentation]: https://www.last.fm/api/intro/
