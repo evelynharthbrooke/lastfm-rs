@@ -6,6 +6,12 @@ set out by the [Semantic Versioning][semver] specification.
 **NOTE**: This changelog only covers 0.3.x onwards. 0.2.x were more of a starting foundation, and as such I don't see
 much point in detailing those releases.
 
+## 0.4.1 — December 10, 2020
+
+### Bug Fixes
+
+- Fixed library version reference in the main library documentation block.
+
 ## 0.4.0 — The Great Documentation Rework (December 10, 2020)
 
 This release brings some significant improvements to the library's documentation. Prior to this release, this library
