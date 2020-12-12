@@ -39,7 +39,7 @@ pub mod error;
 pub mod macros;
 pub mod model;
 pub mod user;
-mod util;
+pub mod util;
 
 /// The Request Builder.
 ///

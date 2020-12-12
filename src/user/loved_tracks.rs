@@ -1,12 +1,10 @@
-use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use std::marker::PhantomData;
 
 use crate::{
     error::{Error, LastFMError},
-    model::{Attributes, Image},
+    model::{Attributes, TrackDate, Image},
     user::User,
-    util::deserialize_datetime_from_str,
     Client, RequestBuilder,
 };
 
@@ -35,7 +33,7 @@ pub struct Track {
     /// The MusicBrainz ID for the given track.
     pub mbid: String,
     /// The date of when the user loved the track.
-    pub date: Option<Date>,
+    pub date: Option<TrackDate>,
     /// The name of the track.
     pub name: String,
     /// The Last.fm URL of the track.
@@ -56,18 +54,6 @@ pub struct Artist {
     pub name: String,
     /// The MusicBrainz ID of the given artist.
     pub mbid: String,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Date {
-    /// The date of a [Track] in UTC
-    #[serde(rename = "uts")]
-    #[serde(deserialize_with = "deserialize_datetime_from_str")]
-    pub date: DateTime<Utc>,
-    /// The date of when a [Track] was first scrobbled on Last.fm, formatted as
-    /// `%d %b %Y, %H:%M`, for example: "11 Dec 2020, 23:12"
-    #[serde(rename = "#text")]
-    pub date_formatted: String,
 }
 
 /// The streamable struct.

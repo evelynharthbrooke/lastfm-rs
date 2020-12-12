@@ -1,12 +1,10 @@
-use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use std::marker::PhantomData;
 
 use crate::{
     error::{Error, LastFMError},
-    model::{Attributes, Image},
+    model::{Attributes, TrackDate, Image},
     user::User,
-    util::deserialize_datetime_from_str,
     Client, RequestBuilder,
 };
 
@@ -47,7 +45,7 @@ pub struct Track {
     #[serde(rename = "image")]
     pub images: Vec<Image>,
     /// The date of when the track was scrobbled.
-    pub date: Option<Date>,
+    pub date: Option<TrackDate>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -70,19 +68,6 @@ pub struct TrackAttributes {
     /// one the user is currently playing.
     #[serde(rename = "nowplaying")]
     pub now_playing: String,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Date {
-    /// The date of a [Track] in UTC
-    #[serde(rename = "uts")]
-    #[serde(deserialize_with = "deserialize_datetime_from_str")]
-    pub date: DateTime<Utc>,
-
-    /// The date of when a [Track] was first scrobbled on Last.fm, formatted as
-    /// `%d %b %Y, %H:%M`, for example: "11 Dec 2020, 23:12"
-    #[serde(rename = "#text")]
-    pub date_formatted: String,
 }
 
 impl RecentTracks {
