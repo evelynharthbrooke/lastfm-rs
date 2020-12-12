@@ -1,5 +1,5 @@
-use chrono::{DateTime, Utc};
 use chrono::serde::ts_seconds::deserialize as from_ts;
+use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use std::marker::PhantomData;
 
