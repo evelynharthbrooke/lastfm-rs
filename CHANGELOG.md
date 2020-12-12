@@ -6,6 +6,18 @@ set out by the [Semantic Versioning][semver] specification.
 **NOTE**: This changelog only covers 0.3.x onwards. 0.2.x were more of a starting foundation, and as such I don't see
 much point in detailing those releases.
 
+## 0.4.2 — Better Date Formatting (December 12, 2020)
+
+Fairly minor release today; only improving date formatting via `chrono` and merging another model. No bug fixes are
+in this release.
+
+## Improvements
+
+- Improved the formatting of dates throughout the library, adapting the use of the `chrono` date & time library. (thanks
+  [@drklee3]! — [PR #3][pr:3]!)
+- Merged the Date structs for LovedTracks and RecentTracks to be just one model under the main model file. This makes the
+  model easier to update if Last.fm were to ever change or add anything to it.
+
 ## 0.4.1 — December 10, 2020
 
 ### Bug Fixes
@@ -64,3 +76,4 @@ Rust in favor of an entirely async approach.
 
 [pr:1]: https://github.com/KamranMackey/lastfm-rs/pull/1
 [pr:2]: https://github.com/KamranMackey/lastfm-rs/pull/2
+[pr:3]: https://github.com/KamranMackey/lastfm-rs/pull/3
