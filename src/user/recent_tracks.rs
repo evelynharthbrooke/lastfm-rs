@@ -1,5 +1,4 @@
 use chrono::{DateTime, Utc};
-use chrono::serde::ts_seconds::deserialize as from_ts;
 use serde::Deserialize;
 use std::marker::PhantomData;
 
@@ -7,6 +6,7 @@ use crate::{
     error::{Error, LastFMError},
     model::{Attributes, Image},
     user::User,
+    util::deserialize_datetime_from_str,
     Client, RequestBuilder,
 };
 
@@ -74,14 +74,15 @@ pub struct TrackAttributes {
 
 #[derive(Debug, Deserialize)]
 pub struct Date {
-    /// The timestamp of a [Track] in the form of a UNIX Epoch /
-    /// Timestamp.
+    /// The date of a [Track] in UTC
     #[serde(rename = "uts")]
-    pub unix_timestamp: String,
-    /// The date of when a [Track] was first scrobbled on Last.fm.
-    #[serde(rename = "#text")]
-    #[serde(deserialize_with = "from_ts")]
+    #[serde(deserialize_with = "deserialize_datetime_from_str")]
     pub date: DateTime<Utc>,
+
+    /// The date of when a [Track] was first scrobbled on Last.fm, formatted as
+    /// `%d %b %Y, %H:%M`, for example: "11 Dec 2020, 23:12"
+    #[serde(rename = "#text")]
+    pub date_formatted: String,
 }
 
 impl RecentTracks {
