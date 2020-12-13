@@ -1,0 +1,34 @@
+{
+    "user": {
+        "playlists": "0",
+        "playcount": "96184",
+        "gender": "n",
+        "name": "tzuwy",
+        "subscriber": "0",
+        "url": "https://www.last.fm/user/tzuwy",
+        "country": "None",
+        "image": [
+            {
+                "size": "small",
+                "#text": "https://lastfm.freetls.fastly.net/i/u/34s/4b8814657600e2d795a0a2fe48d75437.png"
+            },
+            {
+                "size": "medium",
+                "#text": "https://lastfm.freetls.fastly.net/i/u/64s/4b8814657600e2d795a0a2fe48d75437.png"
+            },
+            {
+                "size": "large",
+                "#text": "https://lastfm.freetls.fastly.net/i/u/174s/4b8814657600e2d795a0a2fe48d75437.png"
+            },
+            {
+                "size": "extralarge",
+                "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/4b8814657600e2d795a0a2fe48d75437.png"
+            }
+        ],
+        "registered": { "unixtime": "1473816302", "#text": 1473816302 },
+        "type": "user",
+        "age": "0",
+        "bootstrap": "0",
+        "realname": ""
+    }
+}
