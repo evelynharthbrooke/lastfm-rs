@@ -26,9 +26,7 @@ pub enum Error {
 }
 
 impl StdError for Error {
-    fn source(&self) -> Option<&(dyn StdError + 'static)> {
-        Some(self)
-    }
+    fn source(&self) -> Option<&(dyn StdError + 'static)> { Some(self) }
 }
 
 impl Display for Error {

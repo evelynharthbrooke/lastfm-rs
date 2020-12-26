@@ -96,13 +96,10 @@ impl Client {
     /// Build a new URL with the given query parameters pointing to a given Last.fm API endpoint.
     async fn build_url(&self, params: Vec<(&str, &str)>) -> Url {
         let mut url = Url::parse("http://ws.audioscrobbler.com/2.0/").unwrap();
-
         url.query_pairs_mut().clear().append_pair("api_key", &*self.api_key).append_pair("format", "json");
-
         for (key, value) in params {
             url.query_pairs_mut().append_pair(key, value);
         }
-
         url
     }
 

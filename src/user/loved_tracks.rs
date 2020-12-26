@@ -3,7 +3,7 @@ use std::marker::PhantomData;
 
 use crate::{
     error::{Error, LastFMError},
-    model::{Attributes, TrackDate, Image},
+    model::{Attributes, Image, TrackDate},
     user::User,
     Client, RequestBuilder,
 };
@@ -18,8 +18,12 @@ use crate::{
 /// details on the track information available, refer to [Track].
 #[derive(Debug, Deserialize)]
 pub struct LovedTracks {
+    /// The attributes associated with the user's Loved Tracks
+    /// listing.
     #[serde(rename = "@attr")]
     pub attrs: Attributes,
+    /// A vector array containing the tracks the user has loved
+    /// on Last.fm.
     #[serde(rename = "track")]
     pub tracks: Vec<Track>,
 }

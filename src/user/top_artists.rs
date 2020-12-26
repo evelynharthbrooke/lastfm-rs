@@ -39,7 +39,7 @@ pub struct Artist {
     pub name: String,
     /// The Last.fm URL for the artist.
     pub url: String,
-    /// The main images of the artist.
+    /// The main images linked to the artist.
     #[serde(rename = "image")]
     pub images: Vec<Image>,
 }
@@ -51,6 +51,7 @@ pub struct ArtistAttributes {
 }
 
 impl TopArtists {
+    /// Constructs / builds the request to the user.getTopArtists API endpoint.
     pub async fn build<'a>(client: &'a mut Client, user: &str) -> RequestBuilder<'a, TopArtists> {
         let url = client.build_url(vec![("method", "user.getTopArtists"), ("user", user)]).await;
         RequestBuilder { client, url, phantom: PhantomData }
@@ -59,6 +60,8 @@ impl TopArtists {
 
 /// Allows users to specify the period of which they'd like to retrieve top artist data for.
 pub enum Period {
+    /// Retrieves data collected overall, e.g. since the user's Last.fm account
+    /// was created.
     Overall,
     /// Retrieves data collected over the past 7 days.
     SevenDays,
@@ -70,8 +73,8 @@ pub enum Period {
     SixMonths,
     /// Retrieves data collected over the past twelve months.
     TwelveMonths,
-    /// Retrieves data collected over the past year. Retrieves the same data as [TwelveMonths]. This
-    /// only serves as a shorter shortcut to the same thing.
+    /// Retrieves data collected over the past year. Retrieves the same data as
+    /// [TwelveMonths]. This only serves as a shorter shortcut to the same thing.
     ///
     /// [TwelveMonths]: Period::TwelveMonths
     OneYear,
