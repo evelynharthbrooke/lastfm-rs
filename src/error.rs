@@ -17,10 +17,8 @@ use std::fmt::{Display, Formatter, Result as FmtResult};
 pub enum Error {
     /// An error occurred while parsing the received JSON
     ParsingError(serde_json::error::Error),
-
     /// An error occurred while a request was being made to the API.
     HTTPError(reqwest::Error),
-
     /// An error returned by the Last.fm API.
     LastFMError(LastFMErrorResponse),
 }

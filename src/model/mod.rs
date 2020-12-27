@@ -6,7 +6,7 @@
 use chrono::{DateTime, Utc};
 use serde::Deserialize;
 
-use crate::util::deserialize_datetime_from_str;
+use crate::utilities::deserialize_datetime_from_str;
 
 /// Various attributes transmitted by several API endpoints.
 #[derive(Debug, Deserialize)]
@@ -38,7 +38,7 @@ pub struct TrackDate {
     #[serde(deserialize_with = "deserialize_datetime_from_str")]
     pub raw_date: DateTime<Utc>,
     /// The date of when the given Track was scrobbled or loved, formatted in the
-    /// `%d %b %Y, %H:%M` date string, e.g. "11 Dec 2020, 23:12".
+    /// `%d %b %Y, %H:%M` date format, e.g. "11 Dec 2020, 23:12".
     #[serde(rename = "#text")]
     pub formatted_date: String,
 }

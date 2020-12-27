@@ -1,4 +1,4 @@
-//! Welcome to lastfm_rs, a Rust library for interacting with the Last.fm API.
+//! Welcome to `lastfm_rs`, a Rust library for interacting with the Last.fm API.
 //!
 //! This library aims to be easy to work with, as well as having complete support for the majority of the
 //! Last.fm API endpoints. However, at this time, only a few API endpoints are supported by the library. These
@@ -39,7 +39,9 @@ pub mod error;
 pub mod macros;
 pub mod model;
 pub mod user;
-pub mod util;
+pub mod utilities;
+
+const WS_ENDPOINT: &'static str = "http://ws.audioscrobbler.com/2.0/";
 
 /// The Request Builder.
 ///
@@ -49,12 +51,16 @@ pub mod util;
 /// * `url` - The Last.fm API endpoint URL to feed to the request builder.
 /// * `phantom` - An unused parameter, only used to satisfy the type checker.
 pub struct RequestBuilder<'a, T: 'a> {
+    /// An instance of the Last.fm API client.
     client: &'a mut Client,
+    /// The URL containing the Last.fm endpoint to feed to the Request Builder.
     url: Url,
+    /// The type of the data, e.g. UserInfo. Only used to satisfy
+    /// Rust's type checker.
     phantom: PhantomData<&'a T>,
 }
 
-/// The last.fm client.
+/// The Last.fm client.
 ///
 /// The main client, used for interacting with the Last.fm API. This client is where you will use any
 /// given API methods / calls, such as when you want to retrieve a user's recent tracks. All of the
@@ -95,7 +101,7 @@ impl Client {
 
     /// Build a new URL with the given query parameters pointing to a given Last.fm API endpoint.
     async fn build_url(&self, params: Vec<(&str, &str)>) -> Url {
-        let mut url = Url::parse("http://ws.audioscrobbler.com/2.0/").unwrap();
+        let mut url = Url::parse(WS_ENDPOINT).unwrap();
         url.query_pairs_mut().clear().append_pair("api_key", &*self.api_key).append_pair("format", "json");
         for (key, value) in params {
             url.query_pairs_mut().append_pair(key, value);

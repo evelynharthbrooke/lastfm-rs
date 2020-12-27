@@ -1,5 +1,4 @@
 /// Partially derived from serenity-rs/serenity tests
-
 use lastfm_rs::user::user_info::UserInfo;
 use lastfm_rs::user::User;
 use serde::de::Deserialize;
