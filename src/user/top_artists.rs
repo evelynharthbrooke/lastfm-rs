@@ -59,6 +59,7 @@ impl TopArtists {
 }
 
 /// Allows users to specify the period of which they'd like to retrieve top artist data for.
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, PartialOrd, Ord)]
 pub enum Period {
     /// Retrieves data collected overall, e.g. since the user's Last.fm account
     /// was created.
