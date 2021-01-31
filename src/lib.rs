@@ -41,7 +41,7 @@ pub mod model;
 pub mod user;
 pub mod utilities;
 
-const WS_ENDPOINT: &'static str = "http://ws.audioscrobbler.com/2.0/";
+const WS_ENDPOINT: &str = "http://ws.audioscrobbler.com/2.0/";
 
 /// The Request Builder.
 ///
