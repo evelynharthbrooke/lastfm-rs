@@ -24,7 +24,13 @@ pub enum Error {
 }
 
 impl StdError for Error {
-    fn source(&self) -> Option<&(dyn StdError + 'static)> { Some(self) }
+    fn source(&self) -> Option<&(dyn StdError + 'static)> {
+        match *self {
+            Error::ParsingError(ref e) => Some(e),
+            Error::HTTPError(ref e) => Some(e),
+            Error::LastFMError(_) => None,
+        }
+    }
 }
 
 impl Display for Error {
