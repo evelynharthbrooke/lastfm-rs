@@ -6,12 +6,35 @@ set out by the [Semantic Versioning][semver] specification.
 **NOTE**: This changelog only covers 0.3.x onwards. 0.2.x were more of a starting foundation, and as such I don't see
 much point in detailing those releases.
 
+## 0.5.0 — The Great Reqwest Update (April 3, 2021)
+
+Welcome to `lastfm-rs` v0.5.0. It isn't a big update, however it is bigger than 0.4.2 in terms of changes. This release
+pretty much just updates reqwest to version 0.11.x, which means that as of this release, `lastfm-rs` is now based on Tokio
+1.x. Recommended Tokio release as of this version is the latest 1.x version, which is version 1.4.0 at the time of me writing
+this. A few other additions are included in this release too, including the addition of a couple deserialization tests.
+
+The next release after this will probably focus on fleshing out the rest of the library, including support for more features
+of the Last.fm API.
+
+### New Features
+
+- Introduced deserialization tests. (thanks [@drklee3]! — [PR #5][pr:5])
+- Allow cloning, copying, etc on the `Period` enum. (thanks [@drklee3] — [PR #6][pr:6])
+
+### Improvements
+
+- Updated dependencies to their latest versions, including the Tokio 1.x upgrade. (thanks [@strohel] — [PR #7][pr:7])
+
+### Bug Fixes
+
+- Use actual source for `Error::source` instead of using `self`. (thanks [@drklee3] — [PR #8][pr:8])
+
 ## 0.4.2 — Better Date Formatting (December 12, 2020)
 
 Fairly minor release today; only improving date formatting via `chrono` and merging another model. No bug fixes are
 in this release.
 
-## Improvements
+### Improvements
 
 - Improved the formatting of dates throughout the library, adapting the use of the `chrono` date & time library. (thanks
   [@drklee3]! — [PR #3][pr:3]!)
@@ -73,7 +96,12 @@ Rust in favor of an entirely async approach.
 [semver]: http://semver.org
 
 [@drklee3]: https://github.com/drklee3
+[@strohel]: https://github.com/strohel
 
 [pr:1]: https://github.com/KamranMackey/lastfm-rs/pull/1
 [pr:2]: https://github.com/KamranMackey/lastfm-rs/pull/2
 [pr:3]: https://github.com/KamranMackey/lastfm-rs/pull/3
+[pr:5]: https://github.com/KamranMackey/lastfm-rs/pull/5
+[pr:6]: https://github.com/KamranMackey/lastfm-rs/pull/6
+[pr:7]: https://github.com/KamranMackey/lastfm-rs/pull/7
+[pr:8]: https://github.com/KamranMackey/lastfm-rs/pull/8
