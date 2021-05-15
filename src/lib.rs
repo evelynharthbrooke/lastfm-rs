@@ -39,6 +39,7 @@ pub mod error;
 pub mod macros;
 pub mod model;
 pub mod user;
+pub mod track;
 pub mod utilities;
 
 const WS_ENDPOINT: &str = "http://ws.audioscrobbler.com/2.0/";
