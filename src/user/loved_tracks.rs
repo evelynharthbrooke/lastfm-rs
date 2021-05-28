@@ -3,8 +3,8 @@ use std::marker::PhantomData;
 
 use crate::{
     error::{Error, LastFMError},
-    model::{Attributes, Image, TrackDate},
-    user::User,
+    model::Attributes,
+    user::{User, Track},
     Client, RequestBuilder,
 };
 
@@ -26,48 +26,6 @@ pub struct LovedTracks {
     /// on Last.fm.
     #[serde(rename = "track")]
     pub tracks: Vec<Track>,
-}
-
-/// Contains information about the given track that the
-/// user Loved.
-#[derive(Debug, Deserialize)]
-pub struct Track {
-    /// The artist who published the given track.
-    pub artist: Artist,
-    /// The MusicBrainz ID for the given track.
-    pub mbid: String,
-    /// The date of when the user loved the track.
-    pub date: Option<TrackDate>,
-    /// The name of the track.
-    pub name: String,
-    /// The Last.fm URL of the track.
-    pub url: String,
-    /// The cover art for the given track. Available in small, medium,
-    /// and large sizes.
-    #[serde(rename = "image")]
-    pub images: Vec<Image>,
-    /// Whether or not the track is streamable.
-    pub streamable: Streamable,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Artist {
-    /// The Last.fm URL for the given artist.
-    pub url: String,
-    /// The name of the given artist.
-    pub name: String,
-    /// The MusicBrainz ID of the given artist.
-    pub mbid: String,
-}
-
-/// The streamable struct.
-///
-/// Available if the given track is available for streaming.
-#[derive(Debug, Deserialize)]
-pub struct Streamable {
-    pub fulltrack: String,
-    #[serde(rename = "#text")]
-    pub text: String,
 }
 
 impl LovedTracks {

@@ -3,8 +3,8 @@ use std::marker::PhantomData;
 
 use crate::{
     error::{Error, LastFMError},
-    model::{Attributes, Image, TrackDate},
-    user::User,
+    model::Attributes,
+    user::{User, Track},
     Client, RequestBuilder,
 };
 
@@ -24,50 +24,6 @@ pub struct RecentTracks {
     /// A [Vec] containiing recent [Track]s.
     #[serde(rename = "track")]
     pub tracks: Vec<Track>,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Track {
-    /// The primary artist associated with the track.
-    pub artist: Artist,
-    /// Various attributes associated with the track.
-    #[serde(rename = "@attr")]
-    pub attrs: Option<TrackAttributes>,
-    /// The name of the track.
-    pub name: String,
-    /// The album the track is associated with.
-    pub album: Album,
-    /// The last.fm URL of the track.
-    pub url: String,
-    /// Whether or not a track is streamable.
-    pub streamable: String,
-    /// Images associated with the track.
-    #[serde(rename = "image")]
-    pub images: Vec<Image>,
-    /// The date of when the track was scrobbled.
-    pub date: Option<TrackDate>,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Artist {
-    /// The name of the artist.
-    #[serde(rename = "#text")]
-    pub name: String,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Album {
-    /// The name of the album.
-    #[serde(rename = "#text")]
-    pub name: String,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct TrackAttributes {
-    /// Whether or not the user's first available track is the
-    /// one the user is currently playing.
-    #[serde(rename = "nowplaying")]
-    pub now_playing: String,
 }
 
 impl RecentTracks {

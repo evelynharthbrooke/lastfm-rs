@@ -8,7 +8,7 @@ use serde::Deserialize;
 pub mod similar;
 
 #[derive(Debug, Deserialize)]
-pub struct Track {
+pub struct Endpoints {
     #[serde(rename = "similartracks")]
     pub similar_tracks: Option<similar::Similar>,
 }
