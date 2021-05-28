@@ -3,8 +3,8 @@ use std::marker::PhantomData;
 
 use crate::{
     error::{Error, LastFMError},
-    model::{Attributes, Image},
-    user::User,
+    model::Attributes,
+    user::{User, Artist},
     Client, RequestBuilder,
 };
 
@@ -23,31 +23,6 @@ pub struct TopArtists {
     /// Various internal API attributes.
     #[serde(rename = "@attr")]
     pub attrs: Attributes,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Artist {
-    /// Attributes associated with the artist.
-    #[serde(rename = "@attr")]
-    pub attrs: ArtistAttributes,
-    /// The MusicBrainz ID for the artist.
-    pub mbid: String,
-    /// How many times the user has scrobbled the artist.
-    #[serde(rename = "playcount")]
-    pub scrobbles: String,
-    /// The name of the artist.
-    pub name: String,
-    /// The Last.fm URL for the artist.
-    pub url: String,
-    /// The main images linked to the artist.
-    #[serde(rename = "image")]
-    pub images: Vec<Image>,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct ArtistAttributes {
-    /// Where the artist is ranked in the user's profile.
-    pub rank: String,
 }
 
 impl TopArtists {
