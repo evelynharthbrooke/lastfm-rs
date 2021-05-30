@@ -93,7 +93,7 @@ Only a minor release today with a few improvements and a bug fix.
 ## 0.3.0 / 0.3.1 / 0.3.2 — November 21, 2020
 
 Triple release! Adds async compatibility, renames the library internally, and also removes
-an unused feature flag from `reqwest`. This set of releases also drops support for syncrhonous
+an unused feature flag from `reqwest`. This set of releases also drops support for synchronous
 Rust in favor of an entirely async approach.
 
 ### New Features
