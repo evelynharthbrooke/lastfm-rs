@@ -10,9 +10,9 @@ use crate::{
 
 /// The main similar structure.
 ///
-/// This structure only has one component to it; that component being the
-/// list of similar tracks to the one that was provided. For details on the
-/// information available for the tracks, refer to the [Track] struct.
+/// This structure only has one component to it: the tracks that are similar to the
+/// one provided. For details on the information available for the tracks, refer to
+/// the [Track] struct.
 #[derive(Debug, Deserialize)]
 pub struct Similar {
     /// A [Vec] containing similar [Track]s.
