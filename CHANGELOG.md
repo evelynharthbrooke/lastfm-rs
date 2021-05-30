@@ -108,6 +108,7 @@ Rust in favor of an entirely async approach.
 [semver]: http://semver.org
 
 [@drklee3]: https://github.com/drklee3
+[@PartialDragster]: https://github.com/PartialDragster
 [@strohel]: https://github.com/strohel
 
 [pr:1]: https://github.com/KamranMackey/lastfm-rs/pull/1
@@ -117,3 +118,5 @@ Rust in favor of an entirely async approach.
 [pr:6]: https://github.com/KamranMackey/lastfm-rs/pull/6
 [pr:7]: https://github.com/KamranMackey/lastfm-rs/pull/7
 [pr:8]: https://github.com/KamranMackey/lastfm-rs/pull/8
+[pr:9]: https://github.com/KamranMackey/lastfm-rs/pull/9
+[pr:10]: https://github.com/KamranMackey/lastfm-rs/pull/10
