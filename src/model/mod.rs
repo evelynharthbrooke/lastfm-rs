@@ -3,7 +3,7 @@
 //! These are the various models the crate uses throughout the library, centralized
 //! in this file to ease development and remove code duplication.
 
-use crate::model::custom_deserialization::{string_or_struct, option_string_or_struct};
+use crate::model::custom_deserialization::{option_string_or_struct, string_or_struct};
 use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use std::str::FromStr;
@@ -81,7 +81,7 @@ pub struct Track {
     /// Images associated with the track.
     #[serde(rename = "image")]
     pub images: Vec<Image>,
-    /// The date of when the track was scrobbled. 
+    /// The date of when the track was scrobbled.
     /// Returned when output comes from some endpoints such as loved_tracks
     pub date: Option<TrackDate>,
     /// Whether or not the track is streamable
@@ -168,4 +168,3 @@ pub struct Streamable {
     #[serde(rename = "#text")]
     pub text: String,
 }
-

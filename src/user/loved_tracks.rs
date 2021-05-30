@@ -4,7 +4,7 @@ use std::marker::PhantomData;
 use crate::{
     error::{Error, LastFMError},
     model::Attributes,
-    user::{User, Track},
+    user::{Track, User},
     Client, RequestBuilder,
 };
 

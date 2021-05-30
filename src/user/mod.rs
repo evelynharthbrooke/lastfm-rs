@@ -3,7 +3,7 @@
 //! Contains structs and methods related to working with the user-related endpoints
 //! available through the Last.fm API.
 
-use crate::model::{Track, Artist};
+use crate::model::{Artist, Track};
 use serde::Deserialize;
 
 pub mod loved_tracks;
