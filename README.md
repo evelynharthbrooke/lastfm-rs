@@ -18,6 +18,10 @@ later on.
 **Note**: There are currently no plans to add support for the Scrobbling API, but it will be
 considered.
 
+### Track
+
+`track.getSimilar` - Gets tracks similar to the track provided.
+
 ### User
 
 `user.getRecentTracks` - Gets a users' recent tracks.

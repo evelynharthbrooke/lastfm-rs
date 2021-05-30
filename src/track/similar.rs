@@ -10,12 +10,9 @@ use crate::{
 
 /// The main similar structure.
 ///
-/// This is split off into two areas: One, the attributes (used
-/// for displaying various user-associated attributes), and two,
-/// the similar tracks to the one provided.
-///
-/// For details on the attributes available, refer to [Attributes]. For
-/// details on the track information available, refer to [Track].
+/// This structure only has one component to it; that component being the
+/// list of similar tracks to the one that was provided. For details on the
+/// information available for the tracks, refer to the [Track] struct.
 #[derive(Debug, Deserialize)]
 pub struct Similar {
     /// A [Vec] containing similar [Track]s.
@@ -57,6 +54,5 @@ impl<'a> RequestBuilder<'a, Similar> {
 
 impl<'a> Client {
     pub async fn similar_tracks_by_mbid(&'a mut self, mbid: &str) -> RequestBuilder<'a, Similar> { Similar::build_by_mbid(self, mbid).await }
-
     pub async fn similar_tracks(&'a mut self, artist: &str, track: &str) -> RequestBuilder<'a, Similar> { Similar::build(self, artist, track).await }
 }

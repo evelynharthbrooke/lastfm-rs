@@ -6,6 +6,18 @@ set out by the [Semantic Versioning][semver] specification.
 **NOTE**: This changelog only covers 0.3.x onwards. 0.2.x were more of a starting foundation, and as such I don't see
 much point in detailing those releases.
 
+## 0.6.0 — TBD (TBD)
+
+### New Features
+
+- Support for the `track.getSimilar` endpoint. (thanks [@PartialDragster]! — [PR #9][pr:9])
+
+### Improvements
+
+- Restructuring of the various structure models, e.g. `Track`. **NOTE**: This will break anything currently using
+  these models, as a lot of properties have been made Options, due to inconsistencies in the Last.fm API, but a
+  simple fix for this should be just using `.unwrap()` on these properties. (thanks [@PartialDragster] — [PR #10][pr:10])
+
 ## 0.5.0 — The Great Reqwest Update (April 3, 2021)
 
 Welcome to `lastfm-rs` v0.5.0. It isn't a big update, however it is bigger than 0.4.2 in terms of changes. This release
