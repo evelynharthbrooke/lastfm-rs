@@ -74,6 +74,9 @@ pub struct Track {
     pub mbid: Option<String>,
     /// The name of the track.
     pub name: String,
+    /// The number of times this track has been played in the given time period
+    /// Not always returned, for example, loved tracks do not include a playcount
+    pub playcount: Option<String>,
     /// The album the track is associated with.
     pub album: Option<Album>,
     /// The last.fm URL of the track.
