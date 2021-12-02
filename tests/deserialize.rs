@@ -34,3 +34,8 @@ fn user_get_info() {
 fn user_get_loved_tracks() {
     p!(User, "user.getLovedTracks");
 }
+
+#[test]
+fn user_get_top_tracks() {
+    p!(User, "user.getLovedTracks");
+}
