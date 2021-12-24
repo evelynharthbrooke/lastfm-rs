@@ -37,5 +37,5 @@ fn user_get_loved_tracks() {
 
 #[test]
 fn user_get_top_tracks() {
-    p!(User, "user.getLovedTracks");
+    p!(User, "user.getTopTracks");
 }
