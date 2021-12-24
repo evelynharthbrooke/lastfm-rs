@@ -10,6 +10,7 @@ pub mod loved_tracks;
 pub mod recent_tracks;
 pub mod top_artists;
 pub mod user_info;
+pub mod top_tracks;
 
 #[derive(Debug, Deserialize)]
 pub struct User {
@@ -21,4 +22,6 @@ pub struct User {
     pub top_artists: Option<top_artists::TopArtists>,
     #[serde(rename = "user")]
     pub user_info: Option<user_info::UserInfo>,
+    #[serde(rename = "toptracks")]
+    pub top_tracks: Option<top_tracks::TopTracks>,
 }
