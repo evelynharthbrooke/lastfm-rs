@@ -1,23 +1,23 @@
 [package]
 name            = "lastfm-rs"
-version         = "0.5.0"
-authors         = ["Kamran Mackey <kamranm1200@gmail.com>"]
+version         = "0.6.0"
+authors         = ["Evelyn Marie"]
 readme          = "README.md"
 license         = "MIT"
 description     = "A friendly Rust library for working with the Last.fm API."
-repository      = "https://github.com/KamranMackey/lastfm-rs"
+repository      = "https://github.com/evelynmarie/lastfm-rs"
 keywords        = ["lastfm", "web", "api"]
 categories      = ["api-bindings"]
-edition         = "2018"
+edition         = "2021"
 
 [lib]
 name            = "lastfm_rs"
 path            = "src/lib.rs"
 
 [dependencies]
-chrono          = { version = "0.4.19", features = ["serde"] }
-serde           = { version = "1.0.125", features = ["derive"] }
-serde_json      = "1.0.64"
-reqwest         = { version = "0.11.2", features = ["json"] }
-url             = "2.2.1"
+chrono          = { version = "0.4.22", features = ["serde"] }
+serde           = { version = "1.0.145", features = ["derive"] }
+serde_json      = "1.0.86"
+reqwest         = { version = "0.11.12", features = ["json"] }
+url             = "2.3.1"
 void            = "1.0.2"

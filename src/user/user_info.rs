@@ -14,34 +14,34 @@ pub struct UserInfo {
     pub user: User,
 }
 
-/// The main user structure. This contains all of the necessary profile fields
-/// exposed by the Last.fm API, such as scrobble count, username, the date of
-/// when the user joined Last.fm, and more.
 #[derive(Debug, Deserialize)]
 pub struct User {
-    /// The total scrobbles or plays for a user.
-    #[serde(rename = "playcount")]
-    pub scrobbles: String,
+    /// The username of the user. Assigned when the account was created.
     #[serde(rename = "name")]
-    /// The user's username. Assigned when the user
-    /// created their Last.fm account.
     pub username: String,
-    /// A link to the user's Last.fm profile.
-    pub url: String,
-    /// The user's listed country. Will be an empty string if
-    /// the user has not set their country.
-    pub country: String,
-    /// The user's profile picture(s), in multiple sizes.
-    #[serde(rename = "image")]
-    pub images: Vec<Image>,
-    /// The registration / join date of the user.
-    pub registered: Registered,
-    /// The display name of the user.
-    ///
-    /// This will be an empty string if the user has not yet
-    /// set their display name.
+    /// Whether or not the user is a Last.fm Pro subscriber. 0 if false, 1 if true.
+    pub subscriber: String,
     #[serde(rename = "realname")]
+    /// The display name of the user. Empty string if unset.
     pub display_name: String,
+    #[serde(rename = "playcount")]
+    /// The total amount of scrobbles or track plays listed on the user's account.
+    pub scrobbles: String,
+    /// The amount of unique artists the user has scrobbled / played.
+    pub artist_count: String,
+    /// The amount of unique tracks the user has scrobbled / played.
+    pub track_count: String,
+    /// The amount of unique albums the user has scrobbled / played.
+    pub album_count: String,
+    #[serde(rename = "image")]
+    /// The user's profile picture. Available in multiple sizes.
+    pub images: Vec<Image>,
+    /// The date of when the user joined the Last.fm service.
+    pub registered: Registered,
+    /// The country the user lives in. Will be empty if unset.
+    pub country: String,
+    /// The website link for the user's public Last.fm profile.
+    pub url: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -49,9 +49,7 @@ pub struct Registered {
     /// The UNIX timestamp of when the user registered their Last.fm account.
     #[serde(rename = "unixtime")]
     pub unix_timestamp: String,
-    /// [chrono] DateTime
-    ///
-    /// [chrono]: https://crates.io/crates/chrono
+    /// A [chrono::DateTime] representation of the user's join date. Easily formattable.
     #[serde(rename = "#text")]
     #[serde(deserialize_with = "from_ts")]
     pub date: DateTime<Utc>,

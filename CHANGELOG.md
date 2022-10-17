@@ -17,6 +17,13 @@ much point in detailing those releases.
 - Restructuring of the various structure models, e.g. `Track`. **NOTE**: This will break anything currently using
   these models, as a lot of properties have been made Options, due to inconsistencies in the Last.fm API, but a
   simple fix for this should be just using `.unwrap()` on these properties. (thanks [@PartialDragster] — [PR #10][pr:10])
+- Updated the `User` struct with new API fields. This struct still lacks certain fields like `gender` and `playlists`
+  as these API fields seem to always be empty or unset, and there is no way to create playlists or set your gender in
+  the Last.fm interface.
+
+### Internal Changes
+
+- Updated dependencies to their latest versions.
 
 ## 0.5.0 — The Great Reqwest Update (April 3, 2021)
 
