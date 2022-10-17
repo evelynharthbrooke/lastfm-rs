@@ -21,11 +21,11 @@ pub struct User {
     pub username: String,
     /// Whether or not the user is a Last.fm Pro subscriber. 0 if false, 1 if true.
     pub subscriber: String,
-    #[serde(rename = "realname")]
     /// The display name of the user. Empty string if unset.
+    #[serde(rename = "realname")]
     pub display_name: String,
-    #[serde(rename = "playcount")]
     /// The total amount of scrobbles or track plays listed on the user's account.
+    #[serde(rename = "playcount")]
     pub scrobbles: String,
     /// The amount of unique artists the user has scrobbled / played.
     pub artist_count: String,
@@ -33,8 +33,8 @@ pub struct User {
     pub track_count: String,
     /// The amount of unique albums the user has scrobbled / played.
     pub album_count: String,
-    #[serde(rename = "image")]
     /// The user's profile picture. Available in multiple sizes.
+    #[serde(rename = "image")]
     pub images: Vec<Image>,
     /// The date of when the user joined the Last.fm service.
     pub registered: Registered,
