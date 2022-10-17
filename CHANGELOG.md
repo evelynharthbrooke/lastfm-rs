@@ -118,12 +118,12 @@ Rust in favor of an entirely async approach.
 [@PartialDragster]: https://github.com/PartialDragster
 [@strohel]: https://github.com/strohel
 
-[pr:1]: https://github.com/KamranMackey/lastfm-rs/pull/1
-[pr:2]: https://github.com/KamranMackey/lastfm-rs/pull/2
-[pr:3]: https://github.com/KamranMackey/lastfm-rs/pull/3
-[pr:5]: https://github.com/KamranMackey/lastfm-rs/pull/5
-[pr:6]: https://github.com/KamranMackey/lastfm-rs/pull/6
-[pr:7]: https://github.com/KamranMackey/lastfm-rs/pull/7
-[pr:8]: https://github.com/KamranMackey/lastfm-rs/pull/8
-[pr:9]: https://github.com/KamranMackey/lastfm-rs/pull/9
-[pr:10]: https://github.com/KamranMackey/lastfm-rs/pull/10
+[pr:1]: https://github.com/evelynmarie/lastfm-rs/pull/1
+[pr:2]: https://github.com/evelynmarie/lastfm-rs/pull/2
+[pr:3]: https://github.com/evelynmarie/lastfm-rs/pull/3
+[pr:5]: https://github.com/evelynmarie/lastfm-rs/pull/5
+[pr:6]: https://github.com/evelynmarie/lastfm-rs/pull/6
+[pr:7]: https://github.com/evelynmarie/lastfm-rs/pull/7
+[pr:8]: https://github.com/evelynmarie/lastfm-rs/pull/8
+[pr:9]: https://github.com/evelynmarie/lastfm-rs/pull/9
+[pr:10]: https://github.com/evelynmarie/lastfm-rs/pull/10
