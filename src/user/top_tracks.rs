@@ -25,13 +25,10 @@ use crate::{
 /// details on the track information available, refer to [Track].
 #[derive(Debug, Deserialize)]
 pub struct TopTracks {
-    /// The attributes associated with the user's Top Tracks
-    /// listing.
+    /// The attributes associated with the user's Top Tracks listing.
     #[serde(rename = "@attr")]
     pub attrs: Attributes,
-    /// A [Vec] of the top tracks
-    ///
-    /// The `playcount` property of all of these tracks is guaranteed to be `Some`
+    /// A [Vec] containing the user's top played tracks.
     #[serde(rename = "track")]
     pub tracks: Vec<Track>,
 }

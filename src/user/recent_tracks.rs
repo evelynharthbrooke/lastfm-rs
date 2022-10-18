@@ -21,7 +21,7 @@ pub struct RecentTracks {
     /// Various user attributes.
     #[serde(rename = "@attr")]
     pub attrs: Attributes,
-    /// A [Vec] containiing recent [Track]s.
+    /// A [Vec] containiing the recent [Track]'s a user has played.
     #[serde(rename = "track")]
     pub tracks: Vec<Track>,
 }
