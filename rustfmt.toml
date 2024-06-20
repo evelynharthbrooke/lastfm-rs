@@ -1,0 +1,4 @@
+max_width = 185
+comment_width = 100
+fn_single_line = true
+where_single_line = true
